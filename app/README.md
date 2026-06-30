@@ -6,12 +6,13 @@
 
 ## ① 무엇을 만들었나 (현재 = 베이스 틀)
 - **Next.js 16 + React 19 + TypeScript + Tailwind CSS v4** 앱 골격.
-- **디자인 시스템**: 라이트 테마 고정 · **Pretendard** 통일 · 최소 12px · 마린 블루 단일 액센트(뉴트럴 그레이) — *AI 티 나는 디자인 배제(그라데이션/글로우/글래스 없음)*.
-- **레이아웃**: 상단바 + 좌측 패널(실험 파라미터 → 시나리오 큐 → 에이전트 채팅) + 우측 3D 뷰 슬롯.
-- **파라미터 패널(placeholder)**: 지역/SSP/거리(near·far)/케이스(1–9)/기간/Manning 컨트롤. → **Han이 실제 스키마·설정법으로 교체 예정**.
-- **에이전트 채팅**: 자연어 → 좌측 파라미터 자동 설정(데모용 로컬 키워드 파서 `lib/parseIntent.ts`). “모델 실행 X, 셋팅값만” 원칙.
-- **시나리오 큐 + Mock 파이프라인**: [시나리오 실행] → 10단계 진행률을 순차 표시(현재 Mock 애니메이션).
-- **3D 뷰(placeholder)**: → **Kim `viz/` 모듈이 마운트될 슬롯**(부산권 placeholder + 위치 핀 + 침수심 범례 + MOCK 배지).
+- **디자인 시스템(해양 운영 콘솔)**: 라이트 테마 고정 · **Pretendard** + 데이터엔 mono·tabular · 최소 14px · 네이비 잉크 + 마린 블루 단일 액센트 + 침수심 컬러스케일 — *그라데이션/글래스/이모지 배제, 또렷한 대비*. 토큰은 `globals.css` + `submit/assets/DESIGN_TOKENS.md`.
+- **레이아웃**: 상단바(상태 카운트 + 전체 자동 실행) + 좌측 패널(**[파라미터]/[에이전트] 탭 전환**) + 우측(**[3D 뷰]/[시나리오 비교] 탭**).
+- **파라미터 패널(placeholder)**: 그룹 카드 — 지진원(방향/Mw/케이스) · 해수면상승(SSP/거리/기간) · 영역(지역/Manning). → **Han이 실제 스키마·설정법으로 교체 예정**.
+- **두 실행 모드**: ① **단일 실행**(현재 설정 즉시) ② **다중 자동 반복**(큐에 추가 → 전체 자동 실행). 완료 시 Mock 결과(최대 침수심/면적/건물) 부여.
+- **에이전트(설정·구성 전용)**: 자연어 → 액션(`set`/`queue`/`run`). 단일 설정, **스윕**(SSP 전부·케이스 1~5·방향 등), **자동 설계**, **일괄 실행**까지. 응답은 **마크다운 표**로 렌더(`react-markdown`). 로컬 파서(`lib/parseIntent.ts`)는 실제 **Claude function-calling**(툴: `AGENT_TOOLS`)으로 교체 예정. “모델 실행 X, 설정·구성만” 원칙.
+- **시나리오 큐**: 다중 시나리오 상태/진행/제거, 완료 결과 요약. **시그니처 = 10단계 파이프라인 스테이지 레일**.
+- **3D 뷰 / 비교(placeholder)**: → **Kim `viz/` 모듈 마운트 슬롯**(부산 해운대·마린시티, 위치 핀, 침수심 범례, 계기판 베젤). 비교 탭 = 완료 시나리오 결과 small-multiples.
 
 ## ② 입력/출력 (인터페이스 — 통합 지점)
 - **← backend (Han)**: 파라미터 스키마 JSON, `POST /api/scenarios`(실행/큐), `GET /api/scenarios/:id`(상태·진행·결과). 현재 프론트는 Mock으로 대체 → API 나오면 `AppShell`의 `runScenario`/진행 로직을 교체.
@@ -28,11 +29,11 @@ npm run dev      # http://localhost:3000
 - 의존성: next, react, tailwindcss v4, lucide-react(아이콘), clsx. Pretendard는 layout에서 CDN 로드.
 
 ## ④ 남은 일 (TODO — Han·Kim 작업 반영 지점)
-- [ ] (Han) backend 파라미터 스키마 확정 → `types.ts` 동기화, 폼 검증 추가
-- [ ] (Han) Mock 실행 → 실제 `/api/scenarios` 연동(진행 상태 SSE/폴링)
-- [ ] (Kim) `VizPanel` placeholder → `viz/` 실제 3D 컴포넌트 마운트
-- [ ] (Jin) 에이전트 채팅 로컬 파서 → Claude API function-calling(`set_parameters` 툴)
-- [ ] (Jin) 시나리오 비교 뷰, 반응형/접근성 보강
+- [ ] (Han) backend 파라미터 스키마 확정 → `lib/types.ts` 동기화(현재 placeholder), 폼 검증 추가
+- [ ] (Han) Mock 실행 → 실제 `/api/scenarios` 연동(진행 상태 SSE/폴링), 결과 포맷 확정
+- [ ] (Kim) `VizPanel` placeholder → `viz/` 실제 3D 컴포넌트 마운트(기대 입력 = grid/GeoJSON 침수고)
+- [ ] (Jin) 에이전트 로컬 파서(`parseIntent.ts`) → Claude API function-calling(`AGENT_TOOLS`: set_parameters/queue_scenarios/run)
+- [ ] (Jin) 반응형·접근성 보강, 시나리오 비교 정렬/필터
 
 ## 구조
 ```
