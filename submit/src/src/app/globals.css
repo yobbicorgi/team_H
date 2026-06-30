@@ -1,0 +1,86 @@
+@import "tailwindcss";
+
+/* ───────────────── 디자인 토큰 (라이트 테마 고정 · 해양 운영 콘솔) ─────────────────
+   원칙(디자인 리서치 반영): dominant neutral + 단일 마린 액센트.
+   흐림 방지 = 네이비 잉크 + 보이는 보더 + 솔리드 채움 + 데이터엔 모노·tabular.
+   시안(#06B6D4)은 '라이브/활성'에만. 그라데이션/글래스/보라 금지. 최소 14px. */
+@theme {
+  --font-sans: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  --font-mono: "JetBrains Mono", "SFMono-Regular", "IBM Plex Mono", Consolas,
+    "D2Coding", monospace;
+
+  /* 표면 — 쿨 오프화이트 배경 위에 흰 패널이 떠 보이게 */
+  --color-canvas: #f4f7fa;
+  --color-panel: #ffffff;
+  --color-panel-2: #eef3f7;
+
+  /* 보더 — slate-200급(안 보임) 금지 */
+  --color-border: #d2dce4; /* 장식 구분선 */
+  --color-border-strong: #8497a8; /* 입력/컨트롤 외곽 (비텍스트 3:1) */
+
+  /* 잉크 — 네이비 계열, 회색 텍스트 금지 */
+  --color-ink: #0a2540; /* 제목/핵심 수치 (≈15:1) */
+  --color-ink-2: #243b53; /* 본문 (≈11:1) */
+  --color-muted: #486581; /* 보조 (≈5.5:1) */
+  --color-faint: #6b7c8e; /* 캡션/단위/아이콘 */
+
+  /* 액센트 — 단 하나의 마린 블루 + 라이브 시안 */
+  --color-accent: #0e76c4;
+  --color-accent-hover: #0a5a9c;
+  --color-accent-soft: #e1eff9;
+  --color-cyan: #06b6d4; /* 라이브/활성 인디케이터 전용 */
+
+  /* 상태 — 연한 배경 + 진한 텍스트(-700) */
+  --color-ok: #047857;
+  --color-ok-soft: #ecfdf5;
+  --color-ok-ring: #a7f3d0;
+  --color-warn: #b5650a;
+  --color-warn-soft: #fffbeb;
+  --color-warn-ring: #fde68a;
+  --color-danger: #b91c1c;
+  --color-danger-soft: #fef2f2;
+  --color-danger-ring: #fecaca;
+
+  /* 침수심 스케일 (0 → ≥4m, 라이트 튜닝) */
+  --color-depth-1: #d8eef7;
+  --color-depth-2: #a9d6ec;
+  --color-depth-3: #6fb8de;
+  --color-depth-4: #3a90c8;
+  --color-depth-5: #1f63a6;
+  --color-depth-6: #163e7a;
+  --color-depth-7: #0d2a5c;
+}
+
+:root { color-scheme: light; }
+
+/* 반응형 루트 폰트 — FHD(≈16px) → QHD(≈18.5px) → UHD(≈22px).
+   rem 기반 크기·간격이 해상도에 비례해 스케일된다(최소 14px 보장). */
+html { font-size: clamp(16px, 0.4vw + 8.3px, 22px); }
+html, body { height: 100%; }
+
+body {
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--color-ink-2); /* 본문 기본은 네이비 바디 */
+  background: var(--color-canvas);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+*,
+::before,
+::after { border-color: var(--color-border); }
+
+.tabular { font-variant-numeric: tabular-nums; }
+
+/* 스크롤바 */
+*::-webkit-scrollbar { width: 10px; height: 10px; }
+*::-webkit-scrollbar-thumb {
+  background: #c2cdd8;
+  border-radius: 7px;
+  border: 2px solid var(--color-panel);
+}
+*::-webkit-scrollbar-thumb:hover { background: #a7b4c2; }
+*::-webkit-scrollbar-track { background: transparent; }
