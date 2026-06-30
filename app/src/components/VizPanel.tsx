@@ -20,12 +20,12 @@ import {
   DEFAULT_PARAMS,
   type Scenario,
   type ScenarioParams,
-} from "@/lib/types";
-import { paramsToTsunami, type TsunamiScenario } from "@/lib/tsunamiScenarios";
-import ModelMap2D from "./ModelMap2D";
+} from "@/backend/types";
+import { paramsToTsunami, type TsunamiScenario } from "@/viz/tsunamiScenarios";
+import ModelMap2D from "@/viz/ModelMap2D";
 import { cn } from "./ui";
 
-const FloodTwin = dynamic(() => import("./FloodTwin"), {
+const FloodTwin = dynamic(() => import("@/viz/FloodTwin"), {
   ssr: false,
   loading: () => (
     <div className="flex h-full w-full items-center justify-center bg-[#dbe6f1] text-[0.875rem] text-muted">

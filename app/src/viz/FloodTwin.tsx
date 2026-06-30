@@ -5,7 +5,7 @@ import { Canvas, useFrame, useLoader, useThree } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 import * as THREE from "three";
 import { mergeGeometries } from "three/examples/jsm/utils/BufferGeometryUtils.js";
-import { scenarioWaterSpec, type TsunamiScenario } from "@/lib/tsunamiScenarios";
+import { scenarioWaterSpec, type TsunamiScenario } from "@/viz/tsunamiScenarios";
 
 type Size = { w: number; d: number };
 type BuildingsData = { size: Size; buildings: { pts: [number, number][]; h: number }[] };

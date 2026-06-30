@@ -32,3 +32,200 @@
 2026-06-30 17:01:39 | app/public/twin/manifest.json
 2026-06-30 18:07:23 | submit/teamH_jin_PROCESS_LOG.md
 2026-06-30 17:35:17 | submit/BEFORE_AFTER.md
+
+# ════════════ Han (backend) 산출물 타임스탬프 ════════════
+# 산출물 타임스탬프 증빙 (자동 생성) — teamH / Jin
+2026-06-30 13:18:36 | PLAN.md
+2026-06-30 13:18:16 | TEAM_GUIDE.md
+2026-06-30 12:38:01 | HACKERTON.md
+2026-06-30 13:18:48 | submit/teamH_jin_PROCESS_LOG.md
+2026-06-30 12:41:16 | submit/BEFORE_AFTER.md
+2026-06-30 11:13:53 | submit/CHECKLIST.md
+2026-06-30 12:45:23 | submit/assets/STEP_ANALYSIS.md
+[2026-06-30 12:04:40] teamH_han_PROCESS_LOG.md 초기화 완료
+[2026-06-30 12:04:40] BEFORE_AFTER.md 대기 중 (공통과제 확정 후 작성)
+[2026-06-30 13:02:35] git pull 완료 — origin/main 최신 반영 (0eb5cc9)
+[2026-06-30 13:28:48] teamH_kim_PROCESS_LOG.md 스타터 생성 (Jin) — submit/ 수집
+[2026-06-30 13:28:48] teamH_jin_PROCESS_LOG.md #7 추가 · Han 브랜치 main 병합 (Jin)
+[2026-06-30 13:34:04] 역할 재분담 반영: PLAN.md/TEAM_GUIDE.md, 폴더 README 규칙 (Jin)
+[2026-06-30 13:59:25] app/ 통합 앱 베이스 구축 (Next.js, Jin) — 빌드·렌더 검증 완료
+[2026-06-30 14:46:40] React 호환 레이어: compat.py, api.ts, types.ts, AppShell.tsx, parseIntent.ts 업데이트
+2026-06-30 14:59:59 [#7] teamH_han_PROCESS_LOG.md — Jin 브랜치 분석 + 호환 레이어 설계 기록
+2026-06-30 15:06:50 [#7] backend/api/compat.py, app/src/lib/types.ts, app/src/lib/api.ts, app/src/components/AppShell.tsx, app/src/lib/parseIntent.ts — Jin 호환 레이어 전면 개편, push origin/han (commit 06bd45c)
+2026-06-30 15:30:44 [#22] teamH_han_PROCESS_LOG.md — 22개 항목으로 세분화 업데이트, 발표자료 슬라이드 추가 기록
+2026-06-30 16:28:04 [#23-27] 실제 input 형식분석 / fort.15 실포맷 개편 / fort.13 생성기 신규 / compat main호환+고급설정 / FORMAT_CHECK 검증 / app 되돌림 — Han push
+
+# ════════════ Kim (viz) 산출물 타임스탬프 ════════════
+# 산출물 파일 수정시각 증빙 (자동 생성) — teamH / Kim
+# generated for decision-support module push
+Jun 30 15:20:47 2026 app/.gitignore
+Jun 30 15:20:47 2026 app/eslint.config.mjs
+Jun 30 15:20:47 2026 app/next.config.ts
+Jun 30 15:20:47 2026 app/package-lock.json
+Jun 30 15:20:47 2026 app/package.json
+Jun 30 15:20:47 2026 app/postcss.config.mjs
+Jun 30 15:20:47 2026 app/public/file.svg
+Jun 30 15:20:47 2026 app/public/globe.svg
+Jun 30 15:20:47 2026 app/public/next.svg
+Jun 30 15:20:47 2026 app/public/vercel.svg
+Jun 30 15:20:47 2026 app/public/window.svg
+Jun 30 15:20:47 2026 app/README.md
+Jun 30 15:20:47 2026 app/src/app/favicon.ico
+Jun 30 15:20:47 2026 app/src/app/globals.css
+Jun 30 15:20:47 2026 app/src/app/layout.tsx
+Jun 30 15:20:47 2026 app/src/app/page.tsx
+Jun 30 15:20:47 2026 app/src/components/AgentChat.tsx
+Jun 30 15:20:47 2026 app/src/components/AppShell.tsx
+Jun 30 15:20:47 2026 app/src/components/ParameterPanel.tsx
+Jun 30 15:20:47 2026 app/src/components/ScenarioQueue.tsx
+Jun 30 15:20:47 2026 app/src/components/TopBar.tsx
+Jun 30 15:20:47 2026 app/src/components/ui.tsx
+Jun 30 15:20:47 2026 app/src/components/VizPanel.tsx
+Jun 30 15:20:47 2026 app/src/lib/parseIntent.ts
+Jun 30 15:20:47 2026 app/src/lib/types.ts
+Jun 30 15:20:47 2026 app/tsconfig.json
+Jun 30 12:59:24 2026 submit/assets/README.md
+Jun 30 14:36:08 2026 submit/assets/REAL_TERRAIN_DATA_SOURCES.md
+Jun 30 12:59:24 2026 submit/assets/STEP_ANALYSIS.md
+Jun 30 14:36:19 2026 submit/BEFORE_AFTER.md
+Jun 30 12:59:24 2026 submit/CHECKLIST.md
+Jun 30 15:20:47 2026 submit/evidence/app_base_screenshot.png
+Jun 30 12:59:24 2026 submit/evidence/README.md
+Jun 30 18:55:15 2026 submit/evidence/timestamps.txt
+Jun 30 13:42:34 2026 submit/teamH_han_PROCESS_LOG.md
+Jun 30 15:20:47 2026 submit/teamH_jin_PROCESS_LOG.md
+Jun 30 18:54:57 2026 submit/teamH_kim_PROCESS_LOG.md
+Jun 30 14:46:40 2026 viz/animation/index.html
+Jun 30 14:47:03 2026 viz/metadata/dataset_metadata.json
+Jun 30 14:47:18 2026 viz/metadata/README.md
+Jun 30 14:46:10 2026 viz/mock-data/animation_area.json
+Jun 30 14:46:10 2026 viz/mock-data/area.json
+Jun 30 14:46:10 2026 viz/mock-data/buildings.geojson
+Jun 30 14:46:10 2026 viz/mock-data/inundation_grid.json
+Jun 30 14:46:10 2026 viz/mock-data/inundation.geojson
+Jun 30 14:46:11 2026 viz/mock-data/manifest.json
+Jun 30 14:46:10 2026 viz/mock-data/poi.json
+Jun 30 14:46:10 2026 viz/mock-data/scenarios.json
+Jun 30 15:53:41 2026 viz/mock-data/scene_3d.json
+Jun 30 14:46:10 2026 viz/mock-data/source_events.json
+Jun 30 14:46:10 2026 viz/mock-data/timeline.json
+Jun 30 15:53:42 2026 viz/mock-data/urban_flood_3d.json
+Jun 30 15:10:50 2026 viz/project/.env.example
+Jun 30 15:10:50 2026 viz/project/app/data/mock_scenarios/scenarios.json
+Jun 30 15:10:50 2026 viz/project/app/index.html
+Jun 30 15:10:50 2026 viz/project/app/package.json
+Jun 30 15:10:50 2026 viz/project/app/src/layers.js
+Jun 30 15:10:50 2026 viz/project/app/src/main.js
+Jun 30 15:10:50 2026 viz/project/app/src/map.js
+Jun 30 15:10:50 2026 viz/project/app/src/scenarios.js
+Jun 30 15:10:50 2026 viz/project/app/src/styles.css
+Jun 30 18:53:40 2026 viz/project/data/knowledge/legal_references.json
+Jun 30 18:53:40 2026 viz/project/data/knowledge/response_manual.json
+Jun 30 15:10:50 2026 viz/project/data/mock_scenarios/scenario_01_depth.tif
+Jun 30 15:10:50 2026 viz/project/data/mock_scenarios/scenario_01_summary.json
+Jun 30 15:10:50 2026 viz/project/data/mock_scenarios/scenario_01.nc
+Jun 30 15:10:50 2026 viz/project/data/mock_scenarios/scenario_01.nc.json
+Jun 30 15:10:50 2026 viz/project/data/mock_scenarios/scenario_02_depth.tif
+Jun 30 15:10:50 2026 viz/project/data/mock_scenarios/scenario_02_summary.json
+Jun 30 15:10:50 2026 viz/project/data/mock_scenarios/scenario_02.nc
+Jun 30 15:10:50 2026 viz/project/data/mock_scenarios/scenario_02.nc.json
+Jun 30 15:10:50 2026 viz/project/data/mock_scenarios/scenario_03_depth.tif
+Jun 30 15:10:50 2026 viz/project/data/mock_scenarios/scenario_03_summary.json
+Jun 30 15:10:50 2026 viz/project/data/mock_scenarios/scenario_03.nc
+Jun 30 15:10:50 2026 viz/project/data/mock_scenarios/scenario_03.nc.json
+Jun 30 15:10:50 2026 viz/project/data/mock_scenarios/scenario_04_depth.tif
+Jun 30 15:10:50 2026 viz/project/data/mock_scenarios/scenario_04_summary.json
+Jun 30 15:10:50 2026 viz/project/data/mock_scenarios/scenario_04.nc
+Jun 30 15:10:50 2026 viz/project/data/mock_scenarios/scenario_04.nc.json
+Jun 30 15:10:50 2026 viz/project/data/mock_scenarios/scenarios.json
+Jun 30 15:10:50 2026 viz/project/data/processed/buildings_3d.geojson
+Jun 30 15:10:50 2026 viz/project/data/processed/buildings.geojson
+Jun 30 15:10:50 2026 viz/project/data/processed/coastline.geojson
+Jun 30 15:10:50 2026 viz/project/data/processed/dem_clip.tif
+Jun 30 15:10:50 2026 viz/project/data/processed/dem_clip.tif.json
+Jun 30 15:10:50 2026 viz/project/data/processed/dem_hillshade.tif
+Jun 30 18:53:40 2026 viz/project/data/processed/earthquake_outdoor_shelters.geojson
+Jun 30 15:10:50 2026 viz/project/data/processed/roads.geojson
+Jun 30 18:53:40 2026 viz/project/data/processed/tsunami_shelters.geojson
+Jun 30 15:10:50 2026 viz/project/data/processed/water.geojson
+Jun 30 15:10:50 2026 viz/project/data/raw/dem/README.md
+Jun 30 15:10:50 2026 viz/project/data/raw/imagery/README.md
+Jun 30 15:10:50 2026 viz/project/data/raw/osm/README.md
+Jun 30 15:10:50 2026 viz/project/notebooks/01_data_check.ipynb
+Jun 30 15:10:50 2026 viz/project/notebooks/02_mock_scenario_preview.ipynb
+Jun 30 18:53:40 2026 viz/project/outputs/decision_support/scenario_01_action_recommendations.json
+Jun 30 18:53:40 2026 viz/project/outputs/decision_support/scenario_01_evacuation_route.geojson
+Jun 30 18:53:40 2026 viz/project/outputs/decision_support/scenario_01_shelter_risk.geojson
+Jun 30 18:53:40 2026 viz/project/outputs/decision_support/scenario_02_action_recommendations.json
+Jun 30 18:53:40 2026 viz/project/outputs/decision_support/scenario_02_evacuation_route.geojson
+Jun 30 18:53:40 2026 viz/project/outputs/decision_support/scenario_02_shelter_risk.geojson
+Jun 30 18:53:40 2026 viz/project/outputs/decision_support/scenario_03_action_recommendations.json
+Jun 30 18:53:40 2026 viz/project/outputs/decision_support/scenario_03_evacuation_route.geojson
+Jun 30 18:53:40 2026 viz/project/outputs/decision_support/scenario_03_shelter_risk.geojson
+Jun 30 18:53:40 2026 viz/project/outputs/decision_support/scenario_04_action_recommendations.json
+Jun 30 18:53:40 2026 viz/project/outputs/decision_support/scenario_04_evacuation_route.geojson
+Jun 30 18:53:40 2026 viz/project/outputs/decision_support/scenario_04_shelter_risk.geojson
+Jun 30 15:10:50 2026 viz/project/outputs/figures/01_aoi_overview.png
+Jun 30 15:10:50 2026 viz/project/outputs/figures/02_dem_hillshade.png
+Jun 30 15:10:50 2026 viz/project/outputs/figures/03_building_footprints.png
+Jun 30 15:10:50 2026 viz/project/outputs/figures/04_scenario_depth_comparison.png
+Jun 30 15:10:50 2026 viz/project/outputs/figures/05_arrival_time_map.png
+Jun 30 15:10:50 2026 viz/project/outputs/figures/06_3d_mock_preview.png
+Jun 30 15:10:50 2026 viz/project/outputs/reports/data_inventory.md
+Jun 30 18:53:40 2026 viz/project/outputs/reports/decision_support_summary.md
+Jun 30 18:53:40 2026 viz/project/outputs/reports/legal_manual_inventory.md
+Jun 30 15:10:50 2026 viz/project/outputs/reports/scenario_summary.md
+Jun 30 15:10:50 2026 viz/project/README.md
+Jun 30 18:53:32 2026 viz/project/scripts/build_decision_support.mjs
+Jun 30 15:10:50 2026 viz/project/scripts/collect_osm.py
+Jun 30 15:10:50 2026 viz/project/scripts/create_mock_tsunami_scenarios.py
+Jun 30 15:10:50 2026 viz/project/scripts/export_visualization_layers.py
+Jun 30 15:10:50 2026 viz/project/scripts/make_review_figures.py
+Jun 30 15:10:50 2026 viz/project/scripts/preprocess_dem.py
+Jun 30 15:07:06 2026 viz/PROMPT_EHKIM.txt
+Jun 30 14:44:54 2026 viz/react-map/dist/assets/index-DnJ2xVDM.css
+Jun 30 14:44:54 2026 viz/react-map/dist/assets/index-DXWp7id1.js
+Jun 30 14:44:54 2026 viz/react-map/dist/data/mock-data/inundation.geojson
+Jun 30 14:44:54 2026 viz/react-map/dist/data/mock-data/poi.json
+Jun 30 14:44:54 2026 viz/react-map/dist/data/mock-data/scenarios.json
+Jun 30 14:44:54 2026 viz/react-map/dist/data/mock-data/timeline.json
+Jun 30 14:44:54 2026 viz/react-map/dist/data/real-data/osm_buildings.geojson
+Jun 30 14:44:54 2026 viz/react-map/dist/data/real-data/source_catalog.json
+Jun 30 14:44:54 2026 viz/react-map/dist/data/real-data/terrarium_dem_grid.json
+Jun 30 14:44:54 2026 viz/react-map/dist/index.html
+Jun 30 14:38:42 2026 viz/react-map/index.html
+Jun 30 14:44:49 2026 viz/react-map/package-lock.json
+Jun 30 14:38:35 2026 viz/react-map/package.json
+Jun 30 14:41:36 2026 viz/react-map/public/data/mock-data/inundation.geojson
+Jun 30 14:41:36 2026 viz/react-map/public/data/mock-data/poi.json
+Jun 30 14:41:36 2026 viz/react-map/public/data/mock-data/scenarios.json
+Jun 30 14:41:36 2026 viz/react-map/public/data/mock-data/timeline.json
+Jun 30 14:41:36 2026 viz/react-map/public/data/real-data/osm_buildings.geojson
+Jun 30 14:41:36 2026 viz/react-map/public/data/real-data/source_catalog.json
+Jun 30 14:41:36 2026 viz/react-map/public/data/real-data/terrarium_dem_grid.json
+Jun 30 14:41:28 2026 viz/react-map/src/main.jsx
+Jun 30 14:40:28 2026 viz/react-map/src/styles.css
+Jun 30 14:48:36 2026 viz/README.md
+Jun 30 14:25:51 2026 viz/real-data/osm_buildings.geojson
+Jun 30 14:25:52 2026 viz/real-data/raw/esri_world_imagery_13_7034_3239.jpg
+Jun 30 14:25:53 2026 viz/real-data/raw/esri_world_imagery_13_7034_3240.jpg
+Jun 30 14:25:53 2026 viz/real-data/raw/esri_world_imagery_13_7035_3239.jpg
+Jun 30 14:25:53 2026 viz/real-data/raw/esri_world_imagery_13_7035_3240.jpg
+Jun 30 14:25:51 2026 viz/real-data/raw/overpass_buildings.json
+Jun 30 14:25:52 2026 viz/real-data/raw/terrarium_13_7034_3239.png
+Jun 30 14:25:53 2026 viz/real-data/raw/terrarium_13_7034_3240.png
+Jun 30 14:25:53 2026 viz/real-data/raw/terrarium_13_7035_3239.png
+Jun 30 14:25:53 2026 viz/real-data/raw/terrarium_13_7035_3240.png
+Jun 30 14:35:53 2026 viz/real-data/source_catalog.json
+Jun 30 14:25:53 2026 viz/real-data/terrain_grid.json
+Jun 30 14:35:53 2026 viz/real-data/terrarium_dem_grid.json
+Jun 30 14:35:58 2026 viz/real-map/index.html
+Jun 30 14:46:40 2026 viz/review/index.html
+Jun 30 14:45:47 2026 viz/tools/build_animation_viewer.mjs
+Jun 30 15:10:44 2026 viz/tools/build_ehkim_prompt_project.mjs
+Jun 30 14:35:15 2026 viz/tools/build_real_3d_map.mjs
+Jun 30 14:21:12 2026 viz/tools/build_review_report.mjs
+Jun 30 14:24:18 2026 viz/tools/collect_real_terrain_data.mjs
+Jun 30 14:35:49 2026 viz/tools/decode_terrarium_dem.mjs
+Jun 30 14:45:07 2026 viz/tools/generate_mock_data.mjs
+Jun 30 14:45:59 2026 viz/tools/validate_mock_data.mjs

@@ -14,7 +14,7 @@ import {
   DIRECTIONS,
   type AgentAction,
   type ScenarioParams,
-} from "./types";
+} from "@/backend/types";
 
 type Dim = "ssp" | "case" | "direction" | "distance" | "region" | "mw" | "period";
 

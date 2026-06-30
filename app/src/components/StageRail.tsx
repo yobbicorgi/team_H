@@ -1,4 +1,4 @@
-import { PIPELINE_STEPS, currentStep } from "@/lib/types";
+import { PIPELINE_STEPS, currentStep } from "@/backend/types";
 import { cn } from "./ui";
 
 // 시그니처: 10단계 파이프라인 스테이지 레일.

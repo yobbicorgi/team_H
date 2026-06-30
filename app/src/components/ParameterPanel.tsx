@@ -25,7 +25,7 @@ import {
   directionFrom,
   type AdvancedParams,
   type ScenarioParams,
-} from "@/lib/types";
+} from "@/backend/types";
 import { Button, Field, GroupLabel, SectionHeader, Segmented, Select, cn } from "./ui";
 
 export function ParameterPanel({

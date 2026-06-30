@@ -6,7 +6,7 @@ import ReactMarkdown from "react-markdown";
 import type { Components } from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { interpret } from "@/lib/parseIntent";
-import type { ChatMessage, ScenarioParams } from "@/lib/types";
+import type { ChatMessage, ScenarioParams } from "@/backend/types";
 import { cn } from "./ui";
 
 const SEED = [
@@ -52,7 +52,7 @@ export function AgentChat({
   onActions,
 }: {
   baseParams: ScenarioParams;
-  onActions: (actions: import("@/lib/types").AgentAction[]) => void;
+  onActions: (actions: import("@/backend/types").AgentAction[]) => void;
 }) {
   const [messages, setMessages] = useState<ChatMessage[]>([
     { id: "seed", role: "assistant", text: SEED },

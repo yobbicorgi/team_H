@@ -4,7 +4,7 @@ import {
   regionLabel,
   type Scenario,
   type ScenarioStatus,
-} from "@/lib/types";
+} from "@/backend/types";
 import { Badge, SectionHeader, cn } from "./ui";
 
 export function ScenarioQueue({

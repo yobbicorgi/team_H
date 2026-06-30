@@ -10,7 +10,7 @@ import {
   type Scenario,
   type ScenarioParams,
   type ScenarioStatus,
-} from "@/lib/types";
+} from "@/backend/types";
 import { TopBar } from "./TopBar";
 import { ParameterPanel } from "./ParameterPanel";
 import { ScenarioQueue } from "./ScenarioQueue";

@@ -46,7 +46,7 @@ function norm2(x: number, z: number): [number, number] {
 
 // 사용자 설정(ScenarioParams) → 렌더용 TsunamiScenario 파생(프리셋 없이 사용자값 그대로 반영).
 // maxDepth가 주어지면(완료 결과) 그 값을 최대 침수심으로 사용 — 시나리오 비교와 일관.
-import type { ScenarioParams } from "./types";
+import type { ScenarioParams } from "@/backend/types";
 export function paramsToTsunami(p: ScenarioParams, maxDepth?: number): TsunamiScenario {
   const sspW: Record<string, number> = { "2.6": 0, "4.5": 0.5, "7.0": 1.0, "8.5": 1.5 };
   const base = 1.4 + (sspW[p.ssp] ?? 0.8) + (p.distance === "far" ? 0.7 : 0) + (p.mw - 8) * 0.9 + p.caseNo * 0.12;
