@@ -29,6 +29,7 @@
 - [x] (a) 서브에이전트 / 역할 분담 — 10단계 스크립트를 3개 Explore 서브에이전트로 병렬 분석
 - [x] (b) 외부 도구·데이터 연동 (파일/API/MCP/사내데이터) — 로컬 `earthquake_model_setting` 스크립트·데이터 직접 분석
 - [x] (c) 재사용 산출물 (스킬 / 프롬프트셋 / CLAUDE.md / 서브에이전트 구성) — `submit/assets/STEP_ANALYSIS.md`, 루트 `PLAN.md`
+- 사용 스킬/플러그인: **frontend-design 스킬**(디자인 시스템 리서치·토큰화 — #10) · **Explore 서브에이전트**(10단계 분석·전문가 5인 UI/UX 리뷰 병렬 — #2·#16·#17) · **Playwright**(전기능 동작·시연 타이밍 스크린샷 검증)
 
 ---
 
