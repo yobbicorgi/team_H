@@ -83,7 +83,16 @@
 - 결과: 워크플로우 확정 = 각자 본인 브랜치(`Jin`/`Han`/`Kim`)에서 작업·push → 준비되면 main에 병합(merge/PR). 본인 브랜치엔 혼자만 올려 충돌 0, main 직접 push 차단도 회피. `TEAM_GUIDE.md`·`PLAN.md`의 git 섹션을 브랜치 방식으로 갱신(본인 브랜치 전환, 일상 루틴, main 병합 절차, PR 안내). 원격에 `Jin`/`Han`/`Kim` 브랜치 생성.
 - 막힘 → 해결: 없음.
 
-### [#7] ...
+### [#7] 팀원 브랜치 점검·main 병합 · Kim 로그 스타터 생성(전원 로그 submit 수집)
+- 작성자(팀원): Jin
+- 목표: 팀원 브랜치(Jin/Han/Kim) 상태를 점검해 main으로 병합하고, 각 개인 PROCESS_LOG가 `submit/`에 모이도록 정리.
+- 에이전트에게 시킨 것(실제 프롬프트 핵심 인용):
+  > "kim han jin 브랜치를 확인하고 main으로 합치기 가능할까?" / "각 process log가 submit에 들어와야함"
+- 사용한 기법(있으면): (b 도구연동 — git 브랜치 점검/병합)
+- 결과: 점검 결과 Han만 1커밋 앞섬(본인 로그 신규 + timestamps 추가, 충돌 0) → fast-forward로 main 병합. Jin·Kim은 main과 동일해 병합 불필요. Kim 로그가 없어 `submit/teamH_kim_PROCESS_LOG.md` 스타터(작성자정보·역할 viz만 채운 빈 템플릿) 생성·병합. 이로써 main `submit/`에 teamH_jin/han/kim 세 개인 로그가 모두 수집됨. 모든 브랜치(main/Jin/Han/Kim)를 동일 지점으로 정렬.
+- 막힘 → 해결: 공통 파일 `timestamps.txt` 충돌 방지를 위해, Jin 브랜치를 먼저 main으로 FF한 뒤 작업(전면 재생성 대신 append 방식 유지)해 Han 항목이 덮이지 않도록 처리.
+
+### [#8] ...
 (필요한 만큼 계속 추가)
 
 ---
