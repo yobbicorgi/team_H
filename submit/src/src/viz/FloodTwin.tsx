@@ -37,6 +37,38 @@ function makeDemSampler(d: DemData, size: Size): DemSampler {
   };
 }
 
+// 모두 '도달 가능' 폴백(마스크 준비 전엔 기존 동작 유지)
+const WHITE_TEX = (() => {
+  const t = new THREE.DataTexture(new Uint8Array([255]), 1, 1, THREE.RedFormat, THREE.UnsignedByteType);
+  t.needsUpdate = true;
+  return t;
+})();
+
+// 지형 차폐 마스크 — 바다에서 flood-fill(BFS)로 '수위 이하 + 바다와 연결'된 셀만 1.
+// 산 뒤에 갇힌 저지대(미연결)는 0 → 셰이더에서 침수 제외. (정적: 시나리오 최대수위 기준)
+function computeReachTex(dem: DemData, peakLevel: number, seaLevel: number): THREE.DataTexture {
+  const { nx, ny, data } = dem;
+  const n = nx * ny;
+  const reach = new Uint8Array(n);
+  const queue = new Int32Array(n);
+  let head = 0, tail = 0;
+  for (let k = 0; k < n; k++) if (data[k] < seaLevel) { reach[k] = 255; queue[tail++] = k; }
+  while (head < tail) {
+    const k = queue[head++];
+    const i = k % nx, j = (k - i) / nx;
+    if (i > 0)      { const m = k - 1;  if (!reach[m] && data[m] < peakLevel) { reach[m] = 255; queue[tail++] = m; } }
+    if (i < nx - 1) { const m = k + 1;  if (!reach[m] && data[m] < peakLevel) { reach[m] = 255; queue[tail++] = m; } }
+    if (j > 0)      { const m = k - nx; if (!reach[m] && data[m] < peakLevel) { reach[m] = 255; queue[tail++] = m; } }
+    if (j < ny - 1) { const m = k + nx; if (!reach[m] && data[m] < peakLevel) { reach[m] = 255; queue[tail++] = m; } }
+  }
+  if (tail === 0) reach.fill(255); // 바다 시드 못 찾으면 안전하게 전체 허용(회귀 방지)
+  const tex = new THREE.DataTexture(reach, nx, ny, THREE.RedFormat, THREE.UnsignedByteType);
+  tex.minFilter = THREE.LinearFilter; tex.magFilter = THREE.LinearFilter;
+  tex.wrapS = tex.wrapT = THREE.ClampToEdgeWrapping;
+  tex.needsUpdate = true;
+  return tex;
+}
+
 /* ───────────── 지면(위성 정사영상 + DEM 지형/수심 변위) ───────────── */
 function Ground({ size, sampleDem, exag }: { size: Size; sampleDem: DemSampler; exag: number }) {
   const tex = useLoader(THREE.TextureLoader, "/twin/aerial.jpg");
@@ -187,6 +219,7 @@ const FRAG = /* glsl */ `
   precision highp float;
   uniform float uTime, uPeakDepth, uCrestWidth, uBaseHeight;
   uniform vec3 uSkyColor, uHorizonColor;
+  uniform sampler2D uReach;
   varying vec3 vWorldPos; varying vec3 vNormal; varying vec2 vWorldXZ; varying float vFrontDist; varying float vEtaReal;
   ${DEM_GLSL}
   float hash21(vec2 p){ p=fract(p*vec2(123.34,345.45)); p+=dot(p,p+34.345); return fract(p.x*p.y); }
@@ -211,9 +244,15 @@ const FRAG = /* glsl */ `
     float depth = eta - ground;
     if(depth <= 0.02) discard;
 
+    // 지형 차폐(연결성): 바다에서 도달 불가한 셀(산 뒤 저지대)은 침수 제외
+    vec2 ruv = clamp((vWorldXZ - uDemOrigin) / uDemSize, 0.0, 1.0);
+    float reach = texture2D(uReach, ruv).r;
+
     // 침수색은 '정상 해수면(uBaseHeight) 위 육지'가 쓰나미로 잠길 때만 — 기본 해수면 잠김은 바다색
     float landMask = smoothstep(uBaseHeight, uBaseHeight + 1.5, ground);
-    float inund = max(eta - max(ground, uBaseHeight), 0.0);
+    // 육상인데 바다와 미연결이면 물을 그리지 않음(산이 막아 물이 못 넘어옴)
+    if (landMask > 0.5 && reach < 0.4) discard;
+    float inund = max(eta - max(ground, uBaseHeight), 0.0) * mix(1.0, reach, landMask);
 
     vec2 q = vWorldXZ*0.05 + vec2(uTime*0.1,-uTime*0.08);
     float e=0.7, n0=fbm(q);
@@ -249,9 +288,9 @@ const FRAG = /* glsl */ `
 `;
 
 function Water({
-  scn, size, dem, timeRef,
+  scn, size, dem, reach, timeRef,
 }: {
-  scn: TsunamiScenario; size: Size; dem: THREE.DataTexture; timeRef: React.MutableRefObject<number>;
+  scn: TsunamiScenario; size: Size; dem: THREE.DataTexture; reach: THREE.DataTexture | null; timeRef: React.MutableRefObject<number>;
 }) {
   const geom = useMemo(() => {
     const sx = Math.min(300, Math.max(160, Math.round(size.w / 32)));
@@ -273,6 +312,7 @@ function Water({
       uDemOrigin: { value: new THREE.Vector2(-size.w / 2, -size.d / 2) },
       uDemSize: { value: new THREE.Vector2(size.w, size.d) },
       uSkyColor: { value: new THREE.Color("#d3e6ff") }, uHorizonColor: { value: new THREE.Color("#82a8d0") },
+      uReach: { value: WHITE_TEX },
     }),
     [dem, size]
   );
@@ -291,6 +331,10 @@ function Water({
     uniforms.uPeakDepth.value = s.peakDepth;
     uniforms.uPulses.value = s.pulses;
   }, [scn, size, uniforms]);
+
+  useEffect(() => {
+    uniforms.uReach.value = reach ?? WHITE_TEX;
+  }, [reach, uniforms]);
 
   const mat = useMemo(
     () => new THREE.ShaderMaterial({
@@ -341,9 +385,9 @@ function Controls({ size }: { size: Size }) {
 }
 
 function Scene({
-  scn, size, data, dem, sampleDem, timeRef,
+  scn, size, data, dem, reach, sampleDem, timeRef,
 }: {
-  scn: TsunamiScenario; size: Size; data: BuildingsData; dem: THREE.DataTexture; sampleDem: DemSampler; timeRef: React.MutableRefObject<number>;
+  scn: TsunamiScenario; size: Size; data: BuildingsData; dem: THREE.DataTexture; reach: THREE.DataTexture | null; sampleDem: DemSampler; timeRef: React.MutableRefObject<number>;
 }) {
   return (
     <>
@@ -353,7 +397,7 @@ function Scene({
       <directionalLight position={[size.w * 0.4, size.d * 0.7, size.d * 0.3]} intensity={1.25} />
       <Ground size={size} sampleDem={sampleDem} exag={TERRAIN_EXAG} />
       <Buildings data={data} sampleDem={sampleDem} exag={TERRAIN_EXAG} />
-      <Water scn={scn} size={size} dem={dem} timeRef={timeRef} />
+      <Water scn={scn} size={size} dem={dem} reach={reach} timeRef={timeRef} />
       <Controls size={size} />
     </>
   );
@@ -367,6 +411,7 @@ export default function FloodTwin({
   const [data, setData] = useState<BuildingsData | null>(null);
   const [demRaw, setDemRaw] = useState<DemData | null>(null);
   const [dem, setDem] = useState<THREE.DataTexture | null>(null);
+  const [reachTex, setReachTex] = useState<THREE.DataTexture | null>(null);
   const [err, setErr] = useState<string | null>(null);
 
   useEffect(() => {
@@ -403,6 +448,15 @@ export default function FloodTwin({
     [demRaw, data]
   );
 
+  // 시나리오 최대수위 기준 지형 차폐(연결성) 마스크 — 시나리오 바뀌면 재계산
+  useEffect(() => {
+    if (!demRaw || !data) return;
+    const spec = scenarioWaterSpec(scenario, data.size.w, data.size.d);
+    const tex = computeReachTex(demRaw, spec.baseHeight + spec.tsunamiAmp * 1.05, spec.baseHeight);
+    setReachTex(tex);
+    return () => tex.dispose();
+  }, [demRaw, data, scenario]);
+
   if (err)
     return <div className="flex h-full items-center justify-center bg-[#dbe6f1] text-[0.875rem] text-muted">{err}</div>;
   if (!data || !dem || !sampleDem)
@@ -418,7 +472,7 @@ export default function FloodTwin({
       }}
     >
       <Suspense fallback={null}>
-        <Scene scn={scenario} size={data.size} data={data} dem={dem} sampleDem={sampleDem} timeRef={timeRef} />
+        <Scene scn={scenario} size={data.size} data={data} dem={dem} reach={reachTex} sampleDem={sampleDem} timeRef={timeRef} />
       </Suspense>
     </Canvas>
   );
