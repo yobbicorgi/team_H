@@ -223,9 +223,6 @@
   - **크로스플랫폼 자립**: 지도/DEM/건물(`public/twin/*`) 포함 확인, `requirements.txt`(설치 안내)·README 정비. macOS·Windows 공통(`path.join`·Node/Next). `tsc --noEmit` 통과.
 - 막힘 → 해결: 칩 onClick이 MouseEvent를 `send(textArg)`로 넘겨 타입오류 → `onClick={() => send()}`로 수정. 영속 저장이 진행률 틱마다 쓰지 않도록 700ms 디바운스(완료 시 1회 기록).
 
-### [#19] ...
-(필요한 만큼 계속 추가)
-
 ---
 
 ## 마무리 요약 (1~2줄)
