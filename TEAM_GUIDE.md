@@ -2,7 +2,8 @@
 
 > 대상: teamH 팀원 3명(Jin·Han·Kim). 각자 **본인 PC·본인 계정**으로 작업.
 > 핵심: **git 명령을 몰라도 됩니다.** 쓰고 있는 에이전트(Claude Code / Codex / Cursor)에게 **말로 시키면** 알아서 pull/commit/push 해 줍니다.
-> 저장소: `https://github.com/yobbicorgi/team_H.git` · 컨벤션: **브랜치 없이 전부 `main`**.
+> 저장소: `https://github.com/yobbicorgi/team_H.git`
+> 컨벤션: **각자 본인 브랜치(`Jin`/`Han`/`Kim`)에서 작업·push → 준비되면 `main`에 병합.** 본인 브랜치엔 혼자만 올리니 충돌이 안 납니다.
 
 ---
 
@@ -15,22 +16,36 @@
 git clone https://github.com/yobbicorgi/team_H.git
 cd team_H
 ```
+클론한 뒤 **본인 브랜치로 전환**(처음 1번):
+> **"내 브랜치 `Han`(또는 Kim)으로 전환해줘 (git checkout Han)"**
+```bash
+git checkout Han      # 본인 브랜치(Jin/Han/Kim)로 이동. 이후 작업은 여기서.
+```
 - 클론하면 `CLAUDE.md`(작업 규칙)가 **자동 로드**되고, 처음에 에이전트가 **팀명·본인 이름**을 물어봅니다 → "teamH" + 본인 이름(jin/han/kim)으로 답하면 본인 `submit/teamH_<이름>_PROCESS_LOG.md`가 만들어집니다.
 - 인증을 자꾸 물으면 **GitHub Desktop**(desktop.github.com) 로그인 한 번이 제일 편합니다. (또는 Personal Access Token)
 - git 사용자 정보 에러가 나면 에이전트에게: **"이 저장소에 내 git 이름/이메일 설정해줘 (이름=Han, 이메일=내깃헙이메일)"**
 
 ---
 
-## 1. 매번 작업 루틴 — 외울 건 3개: **받고 → 만들고 → 올리기**
+## 1. 매번 작업 루틴 — **본인 브랜치에서** 받고 → 만들고 → 올리기
+
+> ✅ 항상 **본인 브랜치(Jin/Han/Kim)** 위에 있는지 확인하세요. (에이전트에게 "지금 무슨 브랜치야?" → 아니면 "내 브랜치로 바꿔줘")
 
 | 단계 | 에이전트에게 말로 | 명령어(직접 할 때) |
 |---|---|---|
-| ① 작업 **전** | **"깃헙 최신 내용 받아줘 (git pull)"** | `git pull` |
+| ① 작업 **전** | **"내 브랜치 최신으로 맞춰줘 (git pull)"** | `git pull` |
 | ② 작업 | 본인 역할 폴더에서 에이전트와 작업 | — |
-| ③ 작업 **후** | **"방금 작업 깃헙에 올려줘 — add, commit, push까지"** | `git add -A && git commit -m "한 줄 설명" && git push` |
+| ③ 작업 **후** | **"방금 작업 내 브랜치에 올려줘 — add, commit, push까지"** | `git add -A && git commit -m "한 줄 설명" && git push` |
 
-> ⚠️ **에이전트가 `main` 직접 push를 막으면**(안전정책), **"메인(main)에 직접 올려도 돼, 승인할게"** 라고 답해주세요. 우리 팀 컨벤션이 main이라 괜찮습니다.
-> ⚠️ push가 **`rejected`** 되면 남이 먼저 올린 것 → 에이전트에게 **"pull 먼저 하고 다시 push 해줘"**.
+> 본인 브랜치엔 **나 혼자** 올리므로 `rejected`·충돌이 사실상 안 납니다. (main 직접 push가 아니라 안전정책 차단도 없음)
+
+### main에 합치기 (병합) — 작업이 어느 정도 되면
+혼자 다 만들고 끝낼 필요 없이, 의미 있는 단위가 되면 main에 합쳐 공유합니다. **에이전트에게 시키는 게 가장 쉽습니다**:
+> **"내 브랜치(Han)를 main에 병합해서 올려줘. 충돌 나면 알려주고."**
+
+(또는 GitHub 웹에서 **Pull Request**: `…/team_H/pull/new/Han` → Create → Merge. 클릭만으로 됨.)
+- 합치기 전 최신 main을 반영하려면: **"main 최신 내용을 내 브랜치로 가져와줘 (merge main)"**.
+- 병합 충돌이 나면 무리하지 말고 주장(Jin)이나 에이전트에게 **"충돌 해결해줘"**.
 
 ---
 
