@@ -61,17 +61,37 @@ function extractPatch(text: string): Partial<ScenarioParams> {
   if (/균일|uniform/.test(text)) patch.manningMode = "uniform";
   else if (/차등|graded/.test(text)) patch.manningMode = "graded";
 
-  if (/\beast\b|동쪽|동향|방향\s*동/.test(text)) patch.direction = "EAST";
-  else if (/\bwest\b|서쪽|서향|방향\s*서/.test(text)) patch.direction = "WEST";
-  else if (/\bsouth\b|남쪽|남향|방향\s*남/.test(text)) patch.direction = "SOUTH";
+  // 단층 방향 — 방위어 + 진앙 발생 해역(일본·남해 등)도 인식
+  if (/\beast\b|동쪽|동향|방향\s*동|일본|동해/.test(text)) patch.direction = "EAST";
+  else if (/\bwest\b|서쪽|서향|방향\s*서|서해|황해/.test(text)) patch.direction = "WEST";
+  else if (/\bsouth\b|남쪽|남향|방향\s*남|남해|대한해협|쓰시마|대마도/.test(text))
+    patch.direction = "SOUTH";
 
+  // 지진 규모 — 숫자(규모 9.0) 또는 정성 표현(강진/약한)
   const mwMatch = text.match(/(?:규모|mw|magnitude)\s*0*([89](?:\.\d)?)/);
   if (mwMatch) {
     const v = Number(mwMatch[1]);
     patch.mw = [8.0, 8.5, 9.0].reduce((a, b) =>
       Math.abs(b - v) < Math.abs(a - v) ? b : a
     );
+  } else if (/(최대|초대형|아주\s*큰|매우\s*큰|강진|대지진|거대)/.test(text)) {
+    patch.mw = 9.0;
+  } else if (/규모|지진|해일/.test(text) && /(약한|작은|소규모|미약)/.test(text)) {
+    patch.mw = 8.0;
   }
+
+  // 분석 기간(SLR 기간) — 한국어/연도 표현
+  if (/말기|세기말|원\s*미래|2081|2100/.test(text)) patch.period = "far";
+  else if (/장기|2061|2080/.test(text)) patch.period = "long";
+  else if (/중기|2041|2060/.test(text)) patch.period = "mid";
+  else if (/근\s*미래|단기|2021|2040/.test(text)) patch.period = "near";
+
+  // 기후 시나리오(SSP) 정성 표현
+  if (!patch.ssp) {
+    if (/(최악|고배출|고탄소)/.test(text)) patch.ssp = "8.5";
+    else if (/(저배출|완화|저탄소)/.test(text)) patch.ssp = "2.6";
+  }
+
   return patch;
 }
 
@@ -138,9 +158,9 @@ function detectSweeps(text: string): { dim: Dim; values: Partial<ScenarioParams>
     out.push({ dim: "direction", values: dimValues("direction") });
   } else {
     const dirs: string[] = [];
-    if (/\beast\b|동쪽|동향/.test(text)) dirs.push("EAST");
-    if (/\bwest\b|서쪽|서향/.test(text)) dirs.push("WEST");
-    if (/\bsouth\b|남쪽|남향/.test(text)) dirs.push("SOUTH");
+    if (/\beast\b|동쪽|동향|일본|동해/.test(text)) dirs.push("EAST");
+    if (/\bwest\b|서쪽|서향|서해|황해/.test(text)) dirs.push("WEST");
+    if (/\bsouth\b|남쪽|남향|남해|대한해협/.test(text)) dirs.push("SOUTH");
     if (dirs.length >= 2) out.push({ dim: "direction", values: dirs.map((d) => ({ direction: d })) });
   }
 
@@ -233,12 +253,45 @@ export function interpret(
     actions.push({ type: "set", patch });
   }
 
-  const wantRun = /실행|돌려|수행|시작|run/.test(text);
+  const wantRun = /실행|돌려|수행|시작|run|보여|시뮬/.test(text);
   const wantAll = /(전부|전체|모두|일괄|싹|all)/.test(text);
   if (wantRun && (wantAll || queued)) actions.push({ type: "run", mode: "all" });
   else if (wantRun) actions.push({ type: "run", mode: "single" });
 
-  return { actions, reply: buildReply({ actions, patch, queued, truncated }) };
+  // 아무것도 못 알아들었으면 — 실패가 아니라 '이걸 원하셨나요?'로 되묻는다.
+  return {
+    actions,
+    reply:
+      actions.length === 0
+        ? buildClarify(text, base)
+        : buildReply({ actions, patch, queued, truncated }),
+  };
+}
+
+// ── 모호한 요청 → 추측 제안형 되묻기 (유연 모드) ──
+function buildClarify(text: string, base: ScenarioParams): string {
+  const wantsMany = /(비교|여러|다양|많이|실험|골고루|스윕|여러가지)/.test(text);
+  const wantsRun = /(실행|돌려|수행|시작|보여|시뮬|해일|침수)/.test(text);
+  const dirKo =
+    base.direction === "SOUTH" ? "남해" : base.direction === "EAST" ? "동해" : "서해";
+  const lines: string[] = ["요청을 더 잘 돕고 싶어요. 혹시 **이걸 원하셨나요?**", ""];
+
+  if (wantsMany) {
+    lines.push("- **여러 실험 자동 구성** — “알아서 다양하게 만들어줘” (SSP 4종 × 거리 2종 = 8개)");
+    lines.push("- **한 축만 비교** — “SSP 전부 비교”, “케이스 1~5”, “방향 전부”");
+    lines.push("- 만들고 바로 돌리려면 — “…, 전부 자동 실행”");
+  } else if (wantsRun) {
+    lines.push(`- **현재 설정으로 즉시 실행** — 지금 값(${dirKo}·Mw${base.mw.toFixed(1)}·SSP${base.ssp})으로 실행할까요?`);
+    lines.push("- **조건 바꿔 실행** — “남해 규모 9 케이스 3 SSP8.5, 실행”");
+    lines.push("- **여러 개 비교 실행** — “SSP 전부 비교 후 전부 자동 실행”");
+  } else {
+    lines.push("- **단일 설정·실행** — “남해 규모 9.0 케이스 3 SSP8.5, 실행”");
+    lines.push("- **여러 실험(스윕)** — “SSP 전부 비교”, “케이스 1~5”, “방향 전부”");
+    lines.push("- **자동 설계** — “알아서 다양하게 만들어줘”");
+  }
+  lines.push("");
+  lines.push("_원하시는 걸 골라 말씀하시거나, 입력창 위 **빠른 예시**를 눌러도 됩니다._");
+  return lines.join("\n");
 }
 
 // ── 마크다운 응답 (표·서식, 이모지 미사용) ──

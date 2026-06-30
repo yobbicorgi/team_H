@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { SlidersHorizontal, MessagesSquare } from "lucide-react";
 import {
   DEFAULT_PARAMS,
@@ -11,6 +11,7 @@ import {
   type ScenarioParams,
   type ScenarioStatus,
 } from "@/backend/types";
+import { loadScenarios, saveScenarios } from "@/lib/scenarioStore";
 import { TopBar } from "./TopBar";
 import { ParameterPanel } from "./ParameterPanel";
 import { ScenarioQueue } from "./ScenarioQueue";
@@ -24,6 +25,31 @@ export default function AppShell() {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [autoRun, setAutoRun] = useState(false); // 전체 큐 순차 실행 모드
   const [leftTab, setLeftTab] = useState<"params" | "agent">("params");
+  const loadedRef = useRef(false); // 영속 저장 데이터 로드 완료 여부
+
+  // 마운트 시: 저장된 시나리오 복원(database/scenarios.json 또는 localStorage)
+  useEffect(() => {
+    let alive = true;
+    loadScenarios()
+      .then((list) => {
+        if (alive && list.length) setScenarios(list);
+      })
+      .finally(() => {
+        loadedRef.current = true;
+      });
+    return () => {
+      alive = false;
+    };
+  }, []);
+
+  // 시나리오가 바뀌면 디바운스 후 영속 저장(진행률 틱은 자동 합쳐짐)
+  useEffect(() => {
+    if (!loadedRef.current) return;
+    const t = setTimeout(() => {
+      void saveScenarios(scenarios);
+    }, 700);
+    return () => clearTimeout(t);
+  }, [scenarios]);
 
   const patchParams = (patch: Partial<ScenarioParams>) =>
     setParams((p) => ({ ...p, ...patch }));
@@ -45,8 +71,11 @@ export default function AppShell() {
 
   const removeScenario = (id: string) =>
     setScenarios((prev) => prev.filter((s) => s.id !== id));
+  // '완료 비우기' = 큐 목록에서만 감춤(archived). 우측 3D/2D 뷰어에서는 계속 조회 가능.
   const clearDone = () =>
-    setScenarios((prev) => prev.filter((s) => s.status !== "done"));
+    setScenarios((prev) =>
+      prev.map((s) => (s.status === "done" ? { ...s, archived: true } : s))
+    );
 
   // 임의 파라미터로 시나리오 추가(에이전트 스윕/자동설계용)
   function addParams(p: ScenarioParams, status: ScenarioStatus) {
@@ -106,9 +135,14 @@ export default function AppShell() {
     setScenarios((prev) => prev.map((s) => (s.id === q[0].id ? { ...s, status: "running" } : s)));
   }, [scenarios, autoRun]);
 
-  const queuedCount = scenarios.filter((s) => s.status === "queued").length;
-  const runningCount = scenarios.filter((s) => s.status === "running").length;
-  const doneCount = scenarios.filter((s) => s.status === "done").length;
+  // 큐 목록/카운트는 archived 제외(좌패널). 우측 뷰어는 완료 전체(archived 포함) 유지.
+  const visibleScenarios = useMemo(
+    () => scenarios.filter((s) => !s.archived),
+    [scenarios]
+  );
+  const queuedCount = visibleScenarios.filter((s) => s.status === "queued").length;
+  const runningCount = visibleScenarios.filter((s) => s.status === "running").length;
+  const doneCount = visibleScenarios.filter((s) => s.status === "done").length;
   const selected = useMemo(
     () => scenarios.find((s) => s.id === selectedId) ?? null,
     [scenarios, selectedId]
@@ -156,7 +190,7 @@ export default function AppShell() {
                 queuedCount={queuedCount}
               />
               <ScenarioQueue
-                scenarios={scenarios}
+                scenarios={visibleScenarios}
                 selectedId={selectedId}
                 queuedCount={queuedCount}
                 onSelect={setSelectedId}

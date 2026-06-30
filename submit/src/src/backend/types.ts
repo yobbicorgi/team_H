@@ -142,6 +142,7 @@ export type Scenario = {
   progress: number; // 0~100
   createdAt: number;
   result?: ScenarioResult;
+  archived?: boolean; // 큐에서 '완료 비우기' 했지만 우측 뷰어에서는 계속 조회 가능
 };
 
 // 파라미터로부터 결정론적 Mock 결과 생성 (데모 비교용 — 난수 미사용)

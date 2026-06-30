@@ -4,12 +4,9 @@ import { useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import {
   Box,
-  BarChart3,
   MapPin,
   Map,
   Waves,
-  Building2,
-  Layers,
   Play,
   Pause,
   ChevronDown,
@@ -61,7 +58,7 @@ export function VizPanel({
   selected: Scenario | null;
   doneScenarios: Scenario[];
 }) {
-  const [tab, setTab] = useState<"view" | "map2d" | "compare">("view");
+  const [tab, setTab] = useState<"view" | "map2d">("view");
   const [viewId, setViewId] = useState<string | null>(null);
 
   // 완료된 시나리오가 생기면 최신을 표시 대상으로 선택
@@ -90,13 +87,6 @@ export function VizPanel({
       <div className="flex h-12 shrink-0 items-center gap-1 border-b border-border bg-panel px-3">
         <Tab active={tab === "view"} icon={<Box size={15} />} label="3D 뷰" onClick={() => setTab("view")} />
         <Tab active={tab === "map2d"} icon={<Map size={15} />} label="2D 모델맵" onClick={() => setTab("map2d")} />
-        <Tab
-          active={tab === "compare"}
-          icon={<BarChart3 size={15} />}
-          label="시나리오 비교"
-          count={doneScenarios.length}
-          onClick={() => setTab("compare")}
-        />
         <div className="ml-auto flex items-center gap-1.5 pr-1 text-[0.875rem] font-medium text-muted">
           <MapPin size={14} className="text-faint" />
           부산 · 마린시티 · 해운대해수욕장
@@ -114,10 +104,16 @@ export function VizPanel({
           onPick={setViewId}
           selected={selected}
         />
-      ) : tab === "map2d" ? (
-        <Map2DTab scenario={mapScn} curParams={curParams} hasScenario={hasScenario} list={doneScenarios} viewId={viewId} onPick={setViewId} />
       ) : (
-        <CompareTab scenarios={doneScenarios} />
+        <Map2DTab
+          scenario={mapScn}
+          curParams={curParams}
+          hasScenario={hasScenario}
+          ready={current?.status === "done"}
+          list={doneScenarios}
+          viewId={viewId}
+          onPick={setViewId}
+        />
       )}
     </main>
   );
@@ -275,6 +271,7 @@ function Map2DTab({
   scenario,
   curParams,
   hasScenario,
+  ready,
   list,
   viewId,
   onPick,
@@ -282,10 +279,29 @@ function Map2DTab({
   scenario: { source: "SOUTH" | "EAST"; mw: number; ssp: string; caseNo: number };
   curParams: ScenarioParams;
   hasScenario: boolean;
+  ready: boolean; // 완료된 시나리오가 있을 때만 maxele 표출 — 시연 타이밍
   list: Scenario[];
   viewId: string | null;
   onPick: (id: string) => void;
 }) {
+  // 시나리오 실행(완료) 전에는 2D 결과를 띄우지 않는다.
+  if (!ready) {
+    return (
+      <div className="flex min-h-0 flex-1 items-center justify-center bg-[#eef3f8] p-4">
+        <div className="flex flex-col items-center gap-2 text-center">
+          <Map size={26} className="text-faint" />
+          <p className="text-[0.938rem] font-semibold text-ink-2">
+            {hasScenario ? "수치모델 수행 중" : "표시할 결과가 없습니다"}
+          </p>
+          <p className="max-w-xs text-[0.875rem] leading-relaxed text-muted">
+            {hasScenario
+              ? "완료되면 2D 최대수위(maxele) 지도가 여기에 표시됩니다."
+              : "좌측에서 시나리오를 설정·실행하면 2D 최대수위 지도가 표시됩니다."}
+          </p>
+        </div>
+      </div>
+    );
+  }
   return (
     <div className="relative min-h-0 flex-1">
       <ModelMap2D scenario={scenario} />
@@ -388,84 +404,6 @@ function TwinPlayback({
       <span className="shrink-0 rounded-md bg-accent-soft px-2 py-0.5 text-[0.875rem] font-semibold text-accent-hover ring-1 ring-inset ring-[#bcd9f2]">
         모의 파동 전파
       </span>
-    </div>
-  );
-}
-
-/* ───────────────── 시나리오 비교 ───────────────── */
-function CompareTab({ scenarios }: { scenarios: Scenario[] }) {
-  if (scenarios.length === 0) {
-    return (
-      <div className="flex min-h-0 flex-1 items-center justify-center p-4">
-        <div className="flex flex-col items-center gap-2 text-center">
-          <Layers size={24} className="text-faint" />
-          <p className="text-[0.938rem] font-semibold text-ink-2">비교할 완료 시나리오가 없습니다</p>
-          <p className="max-w-xs text-[0.875rem] leading-relaxed text-muted">
-            시나리오를 큐에 담아 <span className="font-semibold text-ink-2">전체 자동 실행</span>하면,
-            완료된 결과들이 여기에서 나란히 비교됩니다.
-          </p>
-        </div>
-      </div>
-    );
-  }
-  const maxDepth = Math.max(...scenarios.map((s) => s.result?.maxDepth ?? 0), 1);
-  return (
-    <div className="min-h-0 flex-1 overflow-y-auto p-4">
-      <div className="grid grid-cols-2 gap-3 xl:grid-cols-3">
-        {scenarios.map((s) => (
-          <CompareCard key={s.id} s={s} maxDepth={maxDepth} />
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function CompareCard({ s, maxDepth }: { s: Scenario; maxDepth: number }) {
-  const r = s.result!;
-  const col = depthBarColor(r.maxDepth);
-  return (
-    <div className="rounded-xl border border-border bg-panel p-3.5 shadow-[0_1px_3px_rgba(10,37,64,0.06)]">
-      <div className="flex items-center justify-between">
-        <span className="text-[0.938rem] font-semibold text-ink">{regionLabel(s.params.region)}</span>
-        <span className="h-3 w-3 rounded-sm ring-1 ring-inset ring-black/10" style={{ background: col }} />
-      </div>
-      <SourceLine p={s.params} />
-      <div className="mt-3 flex items-end gap-1.5">
-        <span className="tabular text-[1.625rem] font-semibold leading-none text-ink">{r.maxDepth.toFixed(1)}</span>
-        <span className="mb-0.5 text-[0.875rem] text-muted">m 최대 침수심</span>
-      </div>
-      <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-panel-2">
-        <div className="h-full rounded-full" style={{ width: `${(r.maxDepth / maxDepth) * 100}%`, background: col }} />
-      </div>
-      <div className="mt-3 grid grid-cols-2 gap-2">
-        <Metric label="침수 면적" value={`${r.floodedArea.toFixed(1)} km²`} icon={<Waves size={13} />} />
-        <Metric label="영향 건물" value={`${r.affectedBuildings.toLocaleString()}`} icon={<Building2 size={13} />} />
-      </div>
-    </div>
-  );
-}
-
-function depthBarColor(d: number): string {
-  if (d >= 4) return "#7a0177";
-  if (d >= 2.5) return "#d73027";
-  if (d >= 1) return "#f46d43";
-  if (d >= 0.5) return "#fdae61";
-  return "#2c7fb8";
-}
-
-function SourceLine({ p }: { p: ScenarioParams }) {
-  return (
-    <div className="tabular mt-1 text-[0.875rem] text-muted">
-      {p.direction}·Mw{p.mw.toFixed(1)}·c{p.caseNo} · SSP{p.ssp}·{p.period}
-    </div>
-  );
-}
-
-function Metric({ label, value, icon }: { label: string; value: string; icon?: React.ReactNode }) {
-  return (
-    <div className="rounded-md bg-panel-2 px-2 py-1.5 ring-1 ring-inset ring-border">
-      <div className="flex items-center gap-1 text-[0.875rem] text-muted">{icon}{label}</div>
-      <div className="tabular mt-0.5 text-[0.938rem] font-semibold text-ink">{value}</div>
     </div>
   );
 }

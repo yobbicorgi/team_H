@@ -40,6 +40,9 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
+# 런타임 시나리오 DB — git에 올리지 않음(개인 실험). 각 사용자 폴더에서 자동 생성됨.
+/database/
+
 # 개발/검증 산출물 (재생성 가능 — 제출 제외). 트윈 데이터(public/twin)는 커밋함.
 /shot_*.png
 /cap_*.png
@@ -47,4 +50,7 @@ next-env.d.ts
 /osm_raw.json
 /diag.mjs
 /shot.mjs
+/smoke.mjs
+/timing_check.mjs
+/verify_twin.mjs
 *.output

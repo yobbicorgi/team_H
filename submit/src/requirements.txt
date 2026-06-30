@@ -1,0 +1,37 @@
+# =============================================================
+#  필요 패키지 설치 안내 — 부산 지진해일 디지털트윈 웹 플랫폼
+# =============================================================
+#  이 플랫폼은 Node.js(Next.js) 앱입니다. (Python 프로젝트가 아님)
+#  필요한 패키지는 아래 한 줄로 한 번에 설치됩니다 — 정확한 버전과
+#  전체 의존성은 package.json / package-lock.json 에 고정되어 있습니다.
+#
+#        npm install
+#
+# ── 사전 준비(런타임) ───────────────────────────────────────
+#   Node.js >= 20.9      # https://nodejs.org  (LTS 권장)
+#   npm                  # Node 설치 시 함께 설치됨
+#
+# ── 핵심 런타임 패키지 (npm install 시 자동 설치) ────────────
+#   next            16.2.9      # 웹 프레임워크(App Router) + API 라우트
+#   react           19.2.4
+#   react-dom       19.2.4
+#   three           ^0.185.0    # 3D 엔진
+#   @react-three/fiber ^9.6.1   # React ↔ three.js
+#   @react-three/drei  ^10.7.7  # OrbitControls 등
+#   react-markdown  ^10.1.0     # 에이전트 응답(마크다운 표) 렌더
+#   remark-gfm      ^4.0.1
+#   lucide-react    ^1.22.0     # 아이콘
+#   clsx            ^2.1.1
+#   tailwindcss     ^4          # 스타일 (+ @tailwindcss/postcss)
+#
+# ── 실행 ────────────────────────────────────────────────────
+#   npm install
+#   npm run dev          →  http://localhost:3000
+#
+# ── 참고 ────────────────────────────────────────────────────
+#   * 지도/DEM/건물 등 구동에 필요한 데이터는 public/twin/ 에 포함되어
+#     있어 추가 다운로드 없이 바로 실행됩니다.
+#   * 생성·실행한 시나리오는 database/scenarios.json 에 자동 저장되어
+#     새로고침해도 유지됩니다(각 사용자 폴더에 생성, git 미포함 — 개인 실험).
+#   * (선택) 데이터 재베이크: npm run data:all  — 위성/표고/건물을
+#     동일 bbox로 다시 생성(sharp 사용, devDependency).

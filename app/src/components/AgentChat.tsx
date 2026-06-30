@@ -20,6 +20,14 @@ const SEED = [
   "저는 좌측 파라미터를 채우고 시나리오를 구성하기만 하며, 수치모델을 직접 실행하지는 않습니다.",
 ].join("\n");
 
+// 빠른 예시 칩 — 클릭하면 그대로 전송(유연 모드: 대충 눌러도 동작)
+const CHIPS = [
+  "남해 규모 9.0 케이스 3 SSP8.5, 즉시 실행",
+  "SSP 전부 비교",
+  "케이스 1~5 큐에 추가",
+  "알아서 다양하게 만들어줘",
+];
+
 const md: Components = {
   p: ({ children }) => <p className="my-1 text-[0.938rem] leading-relaxed text-ink-2">{children}</p>,
   strong: ({ children }) => <strong className="font-semibold text-ink">{children}</strong>,
@@ -64,8 +72,8 @@ export function AgentChat({
     listRef.current?.scrollTo({ top: listRef.current.scrollHeight, behavior: "smooth" });
   }, [messages]);
 
-  function send() {
-    const text = input.trim();
+  function send(textArg?: string) {
+    const text = (textArg ?? input).trim();
     if (!text) return;
 
     // 로컬 해석 → 액션 실행 (실제: Claude API function-calling)
@@ -97,6 +105,18 @@ export function AgentChat({
       </div>
 
       <div className="border-t border-border p-2.5">
+        {/* 빠른 예시(칩) — 대충 눌러도 바로 동작하도록 */}
+        <div className="mb-2 flex flex-wrap gap-1.5">
+          {CHIPS.map((c) => (
+            <button
+              key={c}
+              onClick={() => send(c)}
+              className="rounded-full border border-border-strong bg-panel px-2.5 py-1 text-[0.8125rem] font-medium text-ink-2 transition-colors hover:bg-accent-soft hover:text-accent-hover"
+            >
+              {c}
+            </button>
+          ))}
+        </div>
         <div className="flex items-end gap-2 rounded-lg border border-border-strong bg-panel px-2.5 py-2 focus-within:border-accent focus-within:ring-2 focus-within:ring-accent/25">
           <textarea
             value={input}
@@ -112,7 +132,7 @@ export function AgentChat({
             className="max-h-28 flex-1 resize-none bg-transparent text-[0.938rem] text-ink outline-none placeholder:text-faint"
           />
           <button
-            onClick={send}
+            onClick={() => send()}
             disabled={!input.trim()}
             className={cn(
               "flex h-8 w-8 shrink-0 items-center justify-center rounded-md transition-colors",

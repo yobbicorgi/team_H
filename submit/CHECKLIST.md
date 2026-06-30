@@ -4,12 +4,12 @@
 
 | 항목 | 위치 | 완료 |
 |------|------|:----:|
-| 동작하는 산출물(코드/웹앱/스크립트 등) | 프로젝트 루트 또는 `src/` | ☐ |
-| 작업 기록(개인별) | `submit/PROCESS_LOG.md` → 제출 시 **영문** `<팀영문명>_<이름로마자>_PROCESS_LOG.md` | ☐ |
-| 효과 측정(Before/After) | `submit/PROCESS_LOG.md` + `submit/BEFORE_AFTER.md` (업무에 맞는 지표) | ☐ |
-| 재사용 자산 | `submit/assets/` (프롬프트·스킬·CLAUDE.md 사본 등) | ☐ |
-| 증빙(자동) | `submit/evidence/timestamps.txt` (에이전트 자동 생성) | ☐ |
-| 발표자료(5분) | 자유 위치 | ☐ |
+| 동작하는 산출물(코드/웹앱/스크립트 등) | `submit/src/` (어느 PC·macOS/Windows에서 `npm install` → `npm run dev`) | ✅ |
+| 작업 기록(개인별) | `submit/teamH_jin/han/kim_PROCESS_LOG.md` (영문 파일명) | ✅ |
+| 효과 측정(Before/After) | `submit/BEFORE_AFTER.md` + 3개 개인 로그 효과측정(동일 4지표) | ✅ |
+| 재사용 자산 | `submit/assets/` (DESIGN_TOKENS·STEP_ANALYSIS·README) | ✅ |
+| 증빙(자동) | `submit/evidence/timestamps.txt` (자동 생성·시간순 정렬) | ✅ |
+| 발표자료(5분) | 자유 위치 | ☐ (미작성 — 필요 시 작성) |
 
 > 화면 캡처 같은 수작업 증빙은 **안 해도 됩니다.** 무임승차 검증은 Day2 미니시연으로 합니다.
 

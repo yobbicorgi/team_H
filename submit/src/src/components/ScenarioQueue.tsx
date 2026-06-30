@@ -71,7 +71,8 @@ export function ScenarioQueue({
           </p>
         </div>
       ) : (
-        <ul className="mt-3 space-y-2">
+        // 큐가 길어져도 좌패널이 무한정 늘어나지 않도록 큐 내부에 자체 스크롤바
+        <ul className="mt-3 max-h-[22rem] space-y-2 overflow-y-auto pr-1">
           {scenarios.map((s) => (
             <ScenarioRow
               key={s.id}
