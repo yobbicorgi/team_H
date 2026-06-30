@@ -180,16 +180,19 @@ export function Segmented({
     typeof o === "string" ? { value: o, label: o } : o
   );
   return (
-    <div className="inline-flex w-full rounded-lg border border-border-strong bg-panel p-1">
+    <div className="inline-flex w-full rounded-lg border border-border-strong bg-panel p-1" role="radiogroup">
       {opts.map((o) => {
         const active = o.value === value;
         return (
           <button
             key={o.value}
             type="button"
+            role="radio"
+            aria-checked={active}
             onClick={() => onChange(o.value)}
             className={cn(
               "h-8 flex-1 rounded-md px-2 text-[0.875rem] font-semibold transition-colors",
+              "focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-accent",
               active
                 ? "bg-accent text-white shadow-[0_1px_2px_rgba(10,37,64,0.18)]"
                 : "text-muted hover:text-ink-2"

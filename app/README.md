@@ -1,47 +1,42 @@
-# app/ — 통합 웹 플랫폼 (Jin · 전체 통합 · UX/UI · 에이전트)
+# app/ — 통합 웹 플랫폼 (Jin · 전체 통합 · UX/UI · 에이전트 · 디지털트윈)
 
-지진해일 수치모델 자동화 플랫폼의 **프론트엔드 통합 앱**. 좌측 파라미터 설정 + 에이전트 채팅, 우측 3D 침수 시각화(Kim `viz/` 슬롯)를 하나로 묶고, 백엔드(Han `backend/`)와 연동한다.
+지진해일 수치모델 자동화 플랫폼의 **통합 웹 앱**. 좌측에서 파라미터를 설정(또는 에이전트 채팅)하고, 우측에서 **부산 해운대권 3D 디지털트윈 침수 시뮬레이션 / 2D 모델맵 / 시나리오 비교**를 본다. (Next.js 16 + React 19 + TypeScript + Tailwind v4 + three.js)
 
-> ⚠️ **현재는 "틀(frame)"입니다.** 실제 모델 파라미터/설정법은 **Han**이, 3D 시뮬레이션은 **Kim**이 각자 폴더에서 만들고, 이후 push/pull로 가져와 이 틀의 placeholder를 실제 기능·비주얼로 **교체·업그레이드**한다. 이 앱은 그 끼울 자리(슬롯)와 데이터 흐름을 먼저 잡아 둔 것.
-
-## ① 무엇을 만들었나 (현재 = 베이스 틀)
-- **Next.js 16 + React 19 + TypeScript + Tailwind CSS v4** 앱 골격.
-- **디자인 시스템(해양 운영 콘솔)**: 라이트 테마 고정 · **Pretendard** + 데이터엔 mono·tabular · 최소 14px · 네이비 잉크 + 마린 블루 단일 액센트 + 침수심 컬러스케일 — *그라데이션/글래스/이모지 배제, 또렷한 대비*. 토큰은 `globals.css` + `submit/assets/DESIGN_TOKENS.md`.
-- **레이아웃**: 상단바(상태 카운트 + 전체 자동 실행) + 좌측 패널(**[파라미터]/[에이전트] 탭 전환**) + 우측(**[3D 뷰]/[시나리오 비교] 탭**).
-- **파라미터 패널(placeholder)**: 그룹 카드 — 지진원(방향/Mw/케이스) · 해수면상승(SSP/거리/기간) · 영역(지역/Manning). → **Han이 실제 스키마·설정법으로 교체 예정**.
-- **두 실행 모드**: ① **단일 실행**(현재 설정 즉시) ② **다중 자동 반복**(큐에 추가 → 전체 자동 실행). 완료 시 Mock 결과(최대 침수심/면적/건물) 부여.
-- **에이전트(설정·구성 전용)**: 자연어 → 액션(`set`/`queue`/`run`). 단일 설정, **스윕**(SSP 전부·케이스 1~5·방향 등), **자동 설계**, **일괄 실행**까지. 응답은 **마크다운 표**로 렌더(`react-markdown`). 로컬 파서(`lib/parseIntent.ts`)는 실제 **Claude function-calling**(툴: `AGENT_TOOLS`)으로 교체 예정. “모델 실행 X, 설정·구성만” 원칙.
-- **시나리오 큐**: 다중 시나리오 상태/진행/제거, 완료 결과 요약. **시그니처 = 10단계 파이프라인 스테이지 레일**.
-- **3D 뷰 / 비교(placeholder)**: → **Kim `viz/` 모듈 마운트 슬롯**(부산 해운대·마린시티, 위치 핀, 침수심 범례, 계기판 베젤). 비교 탭 = 완료 시나리오 결과 small-multiples.
-
-## ② 입력/출력 (인터페이스 — 통합 지점)
-- **← backend (Han)**: 파라미터 스키마 JSON, `POST /api/scenarios`(실행/큐), `GET /api/scenarios/:id`(상태·진행·결과). 현재 프론트는 Mock으로 대체 → API 나오면 `AppShell`의 `runScenario`/진행 로직을 교체.
-- **→ viz (Kim)**: 선택 시나리오(`Scenario`)와 결과(grid/GeoJSON 침수고)를 `VizPanel`에 전달 → Kim 컴포넌트가 렌더. 결과 포맷 확정 시 `VizPanel` placeholder를 실제 뷰로 교체.
-- 타입 정의: `src/lib/types.ts` (스키마가 backend에서 확정되면 동기화).
-
-## ③ 실행법
+## 실행 (어느 PC에서든 git clone 후)
 ```bash
 cd app
 npm install
-npm run dev      # http://localhost:3000
-# 빌드 검증: npm run build
+npm run dev          # http://localhost:3000
 ```
-- 의존성: next, react, tailwindcss v4, lucide-react(아이콘), clsx. Pretendard는 layout에서 CDN 로드.
+- 시각화에 필요한 데이터(`public/twin/*.json`, `*.jpg`)는 **저장소에 포함**되어 있어 추가 작업 없이 바로 실행된다.
+- (선택) 데이터 재생성: `npm run data:all` — ESRI World Imagery(위성)·AWS Terrarium(표고/수심)·OSM Overpass(건물)를 동일 bbox로 다시 베이크한다(`sharp` 사용, devDependency).
 
-## ④ 남은 일 (TODO — Han·Kim 작업 반영 지점)
-- [ ] (Han) backend 파라미터 스키마 확정 → `lib/types.ts` 동기화(현재 placeholder), 폼 검증 추가
-- [ ] (Han) Mock 실행 → 실제 `/api/scenarios` 연동(진행 상태 SSE/폴링), 결과 포맷 확정
-- [ ] (Kim) `VizPanel` placeholder → `viz/` 실제 3D 컴포넌트 마운트(기대 입력 = grid/GeoJSON 침수고)
-- [ ] (Jin) 에이전트 로컬 파서(`parseIntent.ts`) → Claude API function-calling(`AGENT_TOOLS`: set_parameters/queue_scenarios/run)
-- [ ] (Jin) 반응형·접근성 보강, 시나리오 비교 정렬/필터
+## 주요 기능 (구현됨)
+- **좌측 — 파라미터 / 에이전트 탭**
+  - 파라미터: 지진원(방향·Mw·케이스) · 해수면상승(SSP·분석기간) · 영역(지역·Manning) · 고급설정(ADCIRC·STEP). 실행 = 즉시 실행 / 큐에 추가 / 전체 큐 실행(순차).
+  - 에이전트: 자연어 → 파라미터 설정·다중 시나리오 스윕을 **시나리오 큐에 자동 추가**(마크다운 표로 응답). `lib/parseIntent.ts`(로컬 파서, Claude function-calling 교체 지점).
+- **우측 — 3D 뷰 / 2D 모델맵 / 시나리오 비교 탭**
+  - **3D 디지털트윈**(`FloodTwin.tsx`): 위성 정사영상 + **실측 DEM 지형/수심 기복** + OSM 건물 + **GPU 물 셰이더**(다중 Gerstner 스웰 + 곡선(부채꼴) 쓰나미 파면). 침수는 **실제 DEM에서 η>지반고**로 판정하고 **침수심별 위험색**으로 표기(외해=수심 블루). 침수색은 쓰나미로 정상 해수면 위 육지가 잠길 때만 표시. 재생 타임라인.
+  - **2D 모델맵**(`ModelMap2D.tsx`): 지역 위성 + 실측 지역 DEM 마스크 기반 **최대 수위(maxele) 필드** + fort.14 계산 도메인 경계 · 진앙 · 대상지(부산) 마커.
+  - **시나리오 비교**: 완료 시나리오의 최대 침수심·면적·영향 건물 small-multiples.
+  - 카메라 조작: 드래그=시점이동 · Ctrl+드래그=회전 · 휠=줌.
+- **상단바**: 큐 상태(대기/실행/완료) · 전체 자동 실행. 수치모델 진행은 **비차단 배지**로 표시(작업 계속 가능).
 
 ## 구조
 ```
-app/src/
-  app/{layout.tsx, page.tsx, globals.css}   # 디자인 토큰·Pretendard·라이트테마
-  components/
-    AppShell.tsx        # 상태(파라미터·시나리오·선택) + 레이아웃 조립
-    TopBar.tsx, ParameterPanel.tsx, ScenarioQueue.tsx, AgentChat.tsx, VizPanel.tsx
-    ui.tsx              # Button/Field/Select/Segmented/SectionHeader
-  lib/{types.ts, parseIntent.ts}
+src/
+  components/  AppShell · TopBar · ParameterPanel · AgentChat · ScenarioQueue
+               VizPanel · FloodTwin(3D) · ModelMap2D(2D) · StageRail · ui
+  lib/         types.ts · tsunamiScenarios.ts(시나리오→셰이더 파라미터) · parseIntent.ts
+scripts/       bbox.mjs(공통 bbox) · fetch_osm · bake_aerial · bake_dem · bake_twin
+               · bake_region · bake_manifest  (npm run data:* 로 재현)
+public/twin/   aerial.jpg · dem.json · buildings.json · region.jpg · region_dem.json · manifest.json
 ```
+
+## 통합 지점 (← backend / → viz)
+- **← backend (Han)**: 파라미터 스키마 / `POST·GET /api/scenarios`(실행·상태·결과 GeoJSON). 현재 데모는 Mock 파이프라인(`AppShell`의 진행 로직)으로 대체 — 실제 API 연결 시 교체.
+- **→ viz (Kim)**: 3D 시각화 역할. 본 앱의 `FloodTwin`/`ModelMap2D`는 Kim의 viz 시각화(위성·DEM·건물 정합, 침수 표현)를 app에 통합한 결과물이며, Kim `viz/`의 목업 데이터·3D PoC와 연계된다.
+
+## 검증
+- TypeScript(`tsc --noEmit`) 통과 · Playwright 전기능 동작 테스트(좌측 탭/파라미터/실행·큐/3D·2D·비교 전환/시나리오 선택/재생/에이전트) **콘솔에러 0**.
+- 타입 정의는 `src/lib/types.ts`(backend 스키마 확정 시 동기화).

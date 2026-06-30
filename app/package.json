@@ -6,24 +6,36 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "data:osm": "node scripts/fetch_osm.mjs",
+    "data:dem": "node scripts/bake_dem.mjs",
+    "data:aerial": "node scripts/bake_aerial.mjs",
+    "data:twin": "node scripts/bake_twin.mjs",
+    "data:manifest": "node scripts/bake_manifest.mjs",
+    "data:all": "node scripts/fetch_osm.mjs && node scripts/bake_dem.mjs && node scripts/bake_aerial.mjs && node scripts/bake_twin.mjs && node scripts/bake_manifest.mjs"
   },
   "dependencies": {
+    "@react-three/drei": "^10.7.7",
+    "@react-three/fiber": "^9.6.1",
     "clsx": "^2.1.1",
     "lucide-react": "^1.22.0",
     "next": "16.2.9",
     "react": "19.2.4",
     "react-dom": "19.2.4",
     "react-markdown": "^10.1.0",
-    "remark-gfm": "^4.0.1"
+    "remark-gfm": "^4.0.1",
+    "three": "^0.185.0"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@types/three": "^0.185.0",
     "eslint": "^9",
     "eslint-config-next": "16.2.9",
+    "playwright": "^1.61.1",
+    "sharp": "^0.34.5",
     "tailwindcss": "^4",
     "typescript": "^5"
   }

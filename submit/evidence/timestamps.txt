@@ -10,3 +10,25 @@
 2026-06-30 15:22:21 | submit/teamH_jin_PROCESS_LOG.md
 2026-06-30 14:27:54 | submit/assets/DESIGN_TOKENS.md
 2026-06-30 12:45:23 | submit/assets/STEP_ANALYSIS.md
+
+# ── 디지털트윈 리뉴얼 산출물 (PROCESS_LOG #15~#17, 자동 추가) ──
+2026-06-30 17:41:06 | app/src/components/FloodTwin.tsx
+2026-06-30 18:14:34 | app/src/components/ModelMap2D.tsx
+2026-06-30 18:14:54 | app/src/components/VizPanel.tsx
+2026-06-30 17:42:13 | app/src/components/ParameterPanel.tsx
+2026-06-30 18:05:12 | app/src/lib/tsunamiScenarios.ts
+2026-06-30 17:00:12 | app/scripts/bbox.mjs
+2026-06-30 16:56:48 | app/scripts/bake_aerial.mjs
+2026-06-30 17:28:18 | app/scripts/bake_dem.mjs
+2026-06-30 17:00:46 | app/scripts/bake_twin.mjs
+2026-06-30 16:56:20 | app/scripts/fetch_osm.mjs
+2026-06-30 17:48:19 | app/scripts/bake_region.mjs
+2026-06-30 17:00:57 | app/scripts/bake_manifest.mjs
+2026-06-30 17:01:39 | app/public/twin/aerial.jpg
+2026-06-30 17:28:29 | app/public/twin/dem.json
+2026-06-30 17:38:30 | app/public/twin/buildings.json
+2026-06-30 17:48:26 | app/public/twin/region.jpg
+2026-06-30 17:48:28 | app/public/twin/region_dem.json
+2026-06-30 17:01:39 | app/public/twin/manifest.json
+2026-06-30 18:07:23 | submit/teamH_jin_PROCESS_LOG.md
+2026-06-30 17:35:17 | submit/BEFORE_AFTER.md

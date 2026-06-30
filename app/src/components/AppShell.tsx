@@ -22,6 +22,7 @@ export default function AppShell() {
   const [params, setParams] = useState<ScenarioParams>(DEFAULT_PARAMS);
   const [scenarios, setScenarios] = useState<Scenario[]>([]);
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [autoRun, setAutoRun] = useState(false); // 전체 큐 순차 실행 모드
   const [leftTab, setLeftTab] = useState<"params" | "agent">("params");
 
   const patchParams = (patch: Partial<ScenarioParams>) =>
@@ -31,7 +32,7 @@ export default function AppShell() {
     const id = crypto.randomUUID();
     const s: Scenario = { id, params, status, progress: 0, createdAt: Date.now() };
     setScenarios((prev) => [s, ...prev]);
-    setSelectedId(id);
+    if (status === "running") setSelectedId(id); // 큐 추가(queued)는 우측 3D에 표출하지 않음
     return id;
   }
 
@@ -39,11 +40,8 @@ export default function AppShell() {
   const runSingle = () => add("running");
   // ② 다중용 — 큐에 추가(대기)
   const addToQueue = () => add("queued");
-  // ② 전체 자동 실행 — 대기 중 시나리오를 모두 자동 수행
-  const runAll = () =>
-    setScenarios((prev) =>
-      prev.map((s) => (s.status === "queued" ? { ...s, status: "running" } : s))
-    );
+  // ② 전체 자동 실행 — 대기 시나리오를 순차(한 번에 하나씩) 자동 수행
+  const runAll = () => setAutoRun(true);
 
   const removeScenario = (id: string) =>
     setScenarios((prev) => prev.filter((s) => s.id !== id));
@@ -57,7 +55,7 @@ export default function AppShell() {
       { id, params: p, status, progress: 0, createdAt: Date.now() },
       ...prev,
     ]);
-    setSelectedId(id);
+    if (status === "running") setSelectedId(id); // 에이전트 큐 추가는 3D에 표출하지 않음
   }
 
   // 에이전트 액션 디스패처 (set / queue / run) — 실제로는 Claude function-calling 결과를 그대로 처리
@@ -95,6 +93,18 @@ export default function AppShell() {
     }, 240);
     return () => clearInterval(t);
   }, [running]);
+
+  // 전체 큐 자동 실행 — running이 없고 queued가 있으면 가장 오래된 것 하나만 실행(순차)
+  useEffect(() => {
+    if (!autoRun) return;
+    if (scenarios.some((s) => s.status === "running")) return;
+    const q = scenarios
+      .filter((s) => s.status === "queued")
+      .sort((a, b) => a.createdAt - b.createdAt);
+    if (q.length === 0) { setAutoRun(false); return; }
+    setSelectedId(q[0].id);
+    setScenarios((prev) => prev.map((s) => (s.id === q[0].id ? { ...s, status: "running" } : s)));
+  }, [scenarios, autoRun]);
 
   const queuedCount = scenarios.filter((s) => s.status === "queued").length;
   const runningCount = scenarios.filter((s) => s.status === "running").length;

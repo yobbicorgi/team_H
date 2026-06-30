@@ -17,7 +17,6 @@ import {
 import {
   REGIONS,
   SSPS,
-  DISTANCES,
   PERIODS,
   MANNING_MODES,
   DIRECTIONS,
@@ -107,27 +106,18 @@ export function ParameterPanel({
           <Field label="SSP 시나리오">
             <Segmented options={SSPS} value={params.ssp} onChange={(v) => onChange({ ssp: v })} />
           </Field>
-          <div className="grid grid-cols-2 gap-3">
-            <Field label="거리">
-              <Segmented
-                options={DISTANCES}
-                value={params.distance}
-                onChange={(v) => onChange({ distance: v })}
-              />
-            </Field>
-            <Field label="분석 기간">
-              <Select
-                value={params.period}
-                onChange={(e) => onChange({ period: e.target.value })}
-              >
-                {PERIODS.map((p) => (
-                  <option key={p.value} value={p.value}>
-                    {p.label}
-                  </option>
-                ))}
-              </Select>
-            </Field>
-          </div>
+          <Field label="분석 기간">
+            <Select
+              value={params.period}
+              onChange={(e) => onChange({ period: e.target.value })}
+            >
+              {PERIODS.map((p) => (
+                <option key={p.value} value={p.value}>
+                  {p.label}
+                </option>
+              ))}
+            </Select>
+          </Field>
         </div>
       </div>
 

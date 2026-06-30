@@ -1,0 +1,25 @@
+{
+  "bbox": [
+    129.101,
+    35.094,
+    129.193,
+    35.185
+  ],
+  "center": {
+    "lon": 129.147,
+    "lat": 35.1395
+  },
+  "size": {
+    "w": 8375,
+    "d": 10113
+  },
+  "mPerDegLon": 91032.28,
+  "mPerDegLat": 111132,
+  "projection": "equirectangular(lon/lat 선형) · x=동(+) z=남(+) · 북=-z",
+  "layers": {
+    "aerial": "public/twin/aerial.jpg (ESRI World Imagery)",
+    "dem": "public/twin/dem.json (AWS Terrarium, 표고+수심)",
+    "buildings": "public/twin/buildings.json (OSM Overpass)"
+  },
+  "note": "세 레이어 모두 동일 bbox·동일 등각투영으로 베이크 → 위성/지형/건물 정합"
+}

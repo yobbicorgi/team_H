@@ -39,3 +39,12 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# 개발/검증 산출물 (재생성 가능 — 제출 제외). 트윈 데이터(public/twin)는 커밋함.
+/shot_*.png
+/cap_*.png
+/shot_3d*.png
+/osm_raw.json
+/diag.mjs
+/shot.mjs
+*.output
