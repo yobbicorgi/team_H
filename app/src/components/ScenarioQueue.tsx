@@ -31,7 +31,7 @@ export function ScenarioQueue({
       <SectionHeader
         title="시나리오 큐"
         right={
-          <span className="tabular rounded-md bg-panel-2 px-2 py-0.5 font-mono text-[14px] font-semibold text-ink-2 ring-1 ring-inset ring-border">
+          <span className="tabular rounded-md bg-panel-2 px-2 py-0.5 text-[0.875rem] font-semibold text-ink-2 ring-1 ring-inset ring-border">
             {scenarios.length}
           </span>
         }
@@ -42,7 +42,7 @@ export function ScenarioQueue({
           {queuedCount > 0 && (
             <button
               onClick={onRunAll}
-              className="inline-flex flex-1 items-center justify-center gap-1.5 rounded-lg bg-accent px-3 py-2 text-[14px] font-semibold text-white shadow-[0_1px_2px_rgba(10,37,64,0.18)] transition-colors hover:bg-accent-hover"
+              className="inline-flex flex-1 items-center justify-center gap-1.5 rounded-lg bg-accent px-3 py-2 text-[0.875rem] font-semibold text-white shadow-[0_1px_2px_rgba(10,37,64,0.18)] transition-colors hover:bg-accent-hover"
             >
               <PlayCircle size={15} strokeWidth={2.3} />
               전체 자동 실행 ({queuedCount})
@@ -51,7 +51,7 @@ export function ScenarioQueue({
           {doneCount > 0 && (
             <button
               onClick={onClearDone}
-              className="inline-flex items-center gap-1.5 rounded-lg border border-border-strong bg-panel px-3 py-2 text-[14px] font-semibold text-muted transition-colors hover:bg-panel-2 hover:text-ink-2"
+              className="inline-flex items-center gap-1.5 rounded-lg border border-border-strong bg-panel px-3 py-2 text-[0.875rem] font-semibold text-muted transition-colors hover:bg-panel-2 hover:text-ink-2"
             >
               <Trash2 size={14} />
               완료 비우기
@@ -63,7 +63,7 @@ export function ScenarioQueue({
       {scenarios.length === 0 ? (
         <div className="mt-3 flex flex-col items-center gap-2 rounded-lg border border-dashed border-border-strong bg-panel-2 px-4 py-7 text-center">
           <Layers size={20} className="text-faint" />
-          <p className="text-[14px] leading-relaxed text-muted">
+          <p className="text-[0.875rem] leading-relaxed text-muted">
             추가된 시나리오가 없습니다.
             <br />
             파라미터 설정 후 <span className="font-semibold text-ink-2">실행</span> 또는{" "}
@@ -109,7 +109,7 @@ function ScenarioRow({
       )}
     >
       <div className="flex items-center justify-between gap-2">
-        <span className="truncate text-[15px] font-semibold text-ink">
+        <span className="truncate text-[0.938rem] font-semibold text-ink">
           {regionLabel(s.params.region)}
         </span>
         <div className="flex items-center gap-1.5">
@@ -127,7 +127,7 @@ function ScenarioRow({
         </div>
       </div>
 
-      <div className="tabular mt-1 font-mono text-[14px] text-muted">
+      <div className="tabular mt-1 text-[0.875rem] text-muted">
         {s.params.direction}·Mw{s.params.mw.toFixed(1)}·c{s.params.caseNo} ·
         SSP{s.params.ssp}·{s.params.distance}·{s.params.period}
       </div>
@@ -140,9 +140,9 @@ function ScenarioRow({
               style={{ width: `${s.progress}%` }}
             />
           </div>
-          <div className="tabular mt-1 flex justify-between font-mono text-[14px] text-muted">
-            <span>{currentStep(s.progress)}</span>
-            <span>{Math.round(s.progress)}%</span>
+          <div className="mt-1 flex justify-between text-[0.875rem] text-muted">
+            <span className="font-medium">{currentStep(s.progress)}</span>
+            <span className="tabular">{Math.round(s.progress)}%</span>
           </div>
         </div>
       )}
@@ -150,11 +150,11 @@ function ScenarioRow({
       {s.status === "done" && s.result && (
         <div className="mt-2 flex items-center gap-2 rounded-md bg-panel-2 px-2.5 py-1.5 ring-1 ring-inset ring-border">
           <Waves size={14} className="text-accent" />
-          <span className="text-[14px] text-muted">최대 침수심</span>
-          <span className="tabular font-mono text-[15px] font-semibold text-ink">
+          <span className="text-[0.875rem] text-muted">최대 침수심</span>
+          <span className="tabular text-[0.938rem] font-semibold text-ink">
             {s.result.maxDepth.toFixed(1)} m
           </span>
-          <span className="tabular ml-auto font-mono text-[14px] text-muted">
+          <span className="tabular ml-auto text-[0.875rem] text-muted">
             {s.result.floodedArea.toFixed(1)} km²
           </span>
         </div>

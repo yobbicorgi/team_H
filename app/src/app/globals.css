@@ -53,11 +53,15 @@
 }
 
 :root { color-scheme: light; }
+
+/* 반응형 루트 폰트 — FHD(≈16px) → QHD(≈18.5px) → UHD(≈22px).
+   rem 기반 크기·간격이 해상도에 비례해 스케일된다(최소 14px 보장). */
+html { font-size: clamp(16px, 0.4vw + 8.3px, 22px); }
 html, body { height: 100%; }
 
 body {
   font-family: var(--font-sans);
-  font-size: 15px;
+  font-size: 1rem;
   line-height: 1.5;
   color: var(--color-ink-2); /* 본문 기본은 네이비 바디 */
   background: var(--color-canvas);

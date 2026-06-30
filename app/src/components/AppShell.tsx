@@ -118,7 +118,7 @@ export default function AppShell() {
       />
 
       <div className="flex min-h-0 flex-1">
-        <aside className="flex w-[420px] shrink-0 flex-col border-r border-border bg-panel">
+        <aside className="flex w-[26.25rem] shrink-0 flex-col border-r border-border bg-panel">
           {/* 좌측 탭 전환 — 파라미터 / 에이전트 (가림 없이 각 전체 높이) */}
           <div className="flex shrink-0 gap-1 border-b border-border p-1.5">
             <LeftTab
@@ -142,6 +142,8 @@ export default function AppShell() {
                 onChange={patchParams}
                 onRunSingle={runSingle}
                 onAddToQueue={addToQueue}
+                onRunAll={runAll}
+                queuedCount={queuedCount}
               />
               <ScenarioQueue
                 scenarios={scenarios}
@@ -181,7 +183,7 @@ function LeftTab({
     <button
       onClick={onClick}
       className={cn(
-        "flex flex-1 items-center justify-center gap-1.5 rounded-md py-2 text-[15px] font-semibold transition-colors",
+        "flex flex-1 items-center justify-center gap-1.5 rounded-md py-2 text-[0.938rem] font-semibold transition-colors",
         active
           ? "bg-accent-soft text-accent-hover ring-1 ring-inset ring-[#bcd9f2]"
           : "text-muted hover:bg-panel-2 hover:text-ink"

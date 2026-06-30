@@ -1,12 +1,12 @@
 # 산출물 타임스탬프 증빙 (자동 생성) — teamH / Jin
-# 생성 시각: 2026-06-30 14:52:40 +0900
+# 생성 시각: 2026-06-30 15:24:25 +0900
 
 2026-06-30 13:34:14 | PLAN.md
 2026-06-30 13:34:14 | TEAM_GUIDE.md
-2026-06-30 13:59:44 | HACKERTON.md
 2026-06-30 14:43:53 | app/README.md
-2026-06-30 14:38:49 | app/src/components/AppShell.tsx
-2026-06-30 14:52:12 | submit/teamH_jin_PROCESS_LOG.md
-2026-06-30 12:41:16 | submit/BEFORE_AFTER.md
-2026-06-30 12:45:23 | submit/assets/STEP_ANALYSIS.md
+2026-06-30 15:23:15 | app/src/components/AppShell.tsx
+2026-06-30 15:23:15 | app/src/components/ParameterPanel.tsx
+2026-06-30 15:23:15 | app/src/components/VizPanel.tsx
+2026-06-30 15:22:21 | submit/teamH_jin_PROCESS_LOG.md
 2026-06-30 14:27:54 | submit/assets/DESIGN_TOKENS.md
+2026-06-30 12:45:23 | submit/assets/STEP_ANALYSIS.md

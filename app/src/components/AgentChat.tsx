@@ -21,21 +21,21 @@ const SEED = [
 ].join("\n");
 
 const md: Components = {
-  p: ({ children }) => <p className="my-1 text-[15px] leading-relaxed text-ink-2">{children}</p>,
+  p: ({ children }) => <p className="my-1 text-[0.938rem] leading-relaxed text-ink-2">{children}</p>,
   strong: ({ children }) => <strong className="font-semibold text-ink">{children}</strong>,
-  em: ({ children }) => <em className="text-[14px] not-italic text-muted">{children}</em>,
+  em: ({ children }) => <em className="text-[0.875rem] not-italic text-muted">{children}</em>,
   ul: ({ children }) => <ul className="my-1 space-y-1 pl-1">{children}</ul>,
   li: ({ children }) => (
-    <li className="relative pl-3.5 text-[15px] leading-relaxed text-ink-2 before:absolute before:left-0 before:top-[9px] before:h-1 before:w-1 before:rounded-full before:bg-accent">
+    <li className="relative pl-3.5 text-[0.938rem] leading-relaxed text-ink-2 before:absolute before:left-0 before:top-[9px] before:h-1 before:w-1 before:rounded-full before:bg-accent">
       {children}
     </li>
   ),
   code: ({ children }) => (
-    <code className="rounded bg-panel-2 px-1 py-0.5 font-mono text-[14px] text-ink-2">{children}</code>
+    <code className="rounded bg-panel-2 px-1 py-0.5 text-[0.875rem] text-ink-2">{children}</code>
   ),
   table: ({ children }) => (
     <div className="my-2 overflow-x-auto rounded-lg border border-border">
-      <table className="w-full border-collapse text-[14px]">{children}</table>
+      <table className="w-full border-collapse text-[0.875rem]">{children}</table>
     </div>
   ),
   thead: ({ children }) => <thead className="bg-panel-2">{children}</thead>,
@@ -43,7 +43,7 @@ const md: Components = {
     <th className="border-b border-border px-2 py-1.5 text-left font-semibold text-ink-2">{children}</th>
   ),
   td: ({ children }) => (
-    <td className="tabular border-b border-border px-2 py-1.5 font-mono text-ink-2">{children}</td>
+    <td className="tabular border-b border-border px-2 py-1.5 text-ink-2">{children}</td>
   ),
 };
 
@@ -84,8 +84,8 @@ export function AgentChat({
     <section className="flex h-full min-h-0 flex-col bg-panel">
       <div className="flex items-center gap-2 border-b border-border px-4 py-2.5">
         <MessagesSquare size={15} className="text-accent" />
-        <span className="text-[15px] font-semibold text-ink">에이전트 · 실험 설계</span>
-        <span className="ml-auto rounded-md bg-panel-2 px-1.5 py-0.5 text-[14px] font-medium text-muted ring-1 ring-inset ring-border">
+        <span className="text-[0.938rem] font-semibold text-ink">에이전트 · 실험 설계</span>
+        <span className="ml-auto rounded-md bg-panel-2 px-1.5 py-0.5 text-[0.875rem] font-medium text-muted ring-1 ring-inset ring-border">
           설정·구성 전용
         </span>
       </div>
@@ -109,7 +109,7 @@ export function AgentChat({
             }}
             rows={1}
             placeholder="예: SSP 전부 비교, 케이스 1~5, 전부 자동 실행"
-            className="max-h-28 flex-1 resize-none bg-transparent text-[15px] text-ink outline-none placeholder:text-faint"
+            className="max-h-28 flex-1 resize-none bg-transparent text-[0.938rem] text-ink outline-none placeholder:text-faint"
           />
           <button
             onClick={send}
@@ -135,7 +135,7 @@ function MessageBubble({ m }: { m: ChatMessage }) {
   if (isUser) {
     return (
       <div className="flex justify-end">
-        <div className="max-w-[85%] rounded-lg bg-accent-soft px-3 py-2 text-[15px] leading-relaxed text-ink ring-1 ring-inset ring-[#bcd9f2]">
+        <div className="max-w-[85%] rounded-lg bg-accent-soft px-3 py-2 text-[0.938rem] leading-relaxed text-ink ring-1 ring-inset ring-[#bcd9f2]">
           {m.text}
         </div>
       </div>

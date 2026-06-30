@@ -76,11 +76,9 @@ function extractPatch(text: string): Partial<ScenarioParams> {
 }
 
 const REGION_HINTS: { value: string; keys: string[] }[] = [
-  { value: "Busan", keys: ["busan", "부산", "해운대", "마린시티"] },
-  { value: "Ulsan", keys: ["ulsan", "울산"] },
-  { value: "Jeju_north", keys: ["jeju_north", "제주 북", "제주북", "북제주"] },
-  { value: "Jeju_south", keys: ["jeju_south", "제주 남", "제주남", "남제주"] },
-  { value: "Jindo_Wando", keys: ["jindo", "wando", "진도", "완도"] },
+  { value: "Haeundae", keys: ["haeundae", "해운대"] },
+  { value: "MarineCity", keys: ["marinecity", "marine", "마린시티", "마린"] },
+  { value: "Busan", keys: ["busan", "부산", "전체"] },
 ];
 
 // ── 차원별 전체 값 ──

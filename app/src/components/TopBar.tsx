@@ -18,7 +18,7 @@ export function TopBar({
         <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-ink">
           <Waves size={18} className="text-white" strokeWidth={2.2} />
         </div>
-        <h1 className="text-[16px] font-semibold tracking-tight text-ink">
+        <h1 className="text-[1rem] font-semibold tracking-tight text-ink">
           지진해일 수치모델 자동화 콘솔
         </h1>
       </div>
@@ -26,7 +26,7 @@ export function TopBar({
       <div className="flex items-center gap-3">
         {/* 시나리오 큐 상태 — 가시성 강화(굵은 컬러 숫자) */}
         <div className="flex items-center gap-3 rounded-lg border border-border bg-panel-2 px-3 py-1.5">
-          <span className="flex items-center gap-1.5 text-[14px] font-medium text-muted">
+          <span className="flex items-center gap-1.5 text-[0.875rem] font-medium text-muted">
             <Layers size={15} className="text-faint" />
             큐
           </span>
@@ -39,7 +39,7 @@ export function TopBar({
           <PlayCircle size={16} strokeWidth={2.2} />
           전체 자동 실행
           {queuedCount > 0 && (
-            <span className="tabular ml-0.5 rounded bg-white/20 px-1.5 font-mono text-[14px]">
+            <span className="tabular ml-0.5 rounded bg-white/20 px-1.5 text-[0.875rem]">
               {queuedCount}
             </span>
           )}
@@ -69,10 +69,10 @@ function Stat({
           tone === "done" && (on ? "bg-ok" : "bg-faint")
         )}
       />
-      <span className="text-[14px] text-muted">{label}</span>
+      <span className="text-[0.875rem] text-muted">{label}</span>
       <span
         className={cn(
-          "tabular font-mono text-[17px] font-bold leading-none",
+          "tabular text-[1.0625rem] font-bold leading-none",
           tone === "neutral" && "text-ink",
           tone === "live" && (on ? "text-accent" : "text-faint"),
           tone === "done" && (on ? "text-ok" : "text-faint")

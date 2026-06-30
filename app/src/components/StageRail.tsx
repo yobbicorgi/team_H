@@ -28,8 +28,8 @@ export function StageRail({
               <div className="flex flex-col items-center gap-1">
                 <span
                   className={cn(
-                    "tabular flex items-center justify-center rounded-md font-mono font-semibold transition-colors",
-                    compact ? "h-5 w-5 text-[14px]" : "h-7 w-7 text-[14px]",
+                    "tabular flex items-center justify-center rounded-md font-semibold transition-colors",
+                    compact ? "h-5 w-5 text-[0.875rem]" : "h-7 w-7 text-[0.875rem]",
                     state === "done" && "bg-accent text-white",
                     state === "active" && "bg-accent text-white ring-4 ring-accent/20",
                     state === "pending" && "bg-panel-2 text-faint ring-1 ring-border"
@@ -51,11 +51,11 @@ export function StageRail({
         })}
       </div>
       {!compact && (
-        <div className="tabular mt-2 flex justify-between text-[14px]">
+        <div className="tabular mt-2 flex justify-between text-[0.875rem]">
           <span className="font-medium text-ink-2">
             {done ? "완료 · 10/10 단계" : progress > 0 ? currentStep(progress) : "대기 · 01 지반 변형"}
           </span>
-          <span className="font-mono text-muted">{done ? 100 : Math.round(progress)}%</span>
+          <span className="text-muted">{done ? 100 : Math.round(progress)}%</span>
         </div>
       )}
     </div>

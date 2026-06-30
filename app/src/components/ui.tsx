@@ -16,8 +16,8 @@ export function SectionHeader({
   return (
     <div className="flex items-start justify-between gap-3">
       <div>
-        <h2 className="text-[16px] font-semibold tracking-tight text-ink">{title}</h2>
-        {desc && <p className="mt-0.5 text-[14px] leading-snug text-muted">{desc}</p>}
+        <h2 className="text-[1rem] font-semibold tracking-tight text-ink">{title}</h2>
+        {desc && <p className="mt-0.5 text-[0.875rem] leading-snug text-muted">{desc}</p>}
       </div>
       {right}
     </div>
@@ -30,7 +30,7 @@ export function GroupLabel({ icon, children }: { icon?: ReactNode; children: Rea
     <div className="mb-3 flex items-center gap-2">
       <span className="h-3.5 w-[3px] rounded-full bg-accent" />
       {icon}
-      <span className="text-[14px] font-semibold tracking-tight text-ink-2">{children}</span>
+      <span className="text-[0.875rem] font-semibold tracking-tight text-ink-2">{children}</span>
     </div>
   );
 }
@@ -48,8 +48,8 @@ export function Field({
   return (
     <label className="block">
       <div className="mb-1.5 flex items-baseline justify-between">
-        <span className="text-[14px] font-medium text-ink-2">{label}</span>
-        {hint && <span className="font-mono text-[14px] text-faint">{hint}</span>}
+        <span className="text-[0.875rem] font-medium text-ink-2">{label}</span>
+        {hint && <span className="text-[0.875rem] font-medium text-muted">{hint}</span>}
       </div>
       {children}
     </label>
@@ -74,7 +74,7 @@ export function Button({
         "inline-flex items-center justify-center gap-1.5 rounded-lg font-semibold transition-colors",
         "focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2",
         "disabled:cursor-not-allowed disabled:bg-panel-2 disabled:text-faint disabled:shadow-none disabled:ring-0",
-        size === "sm" ? "h-8 px-3 text-[14px]" : "h-9 px-4 text-[15px]",
+        size === "sm" ? "h-8 px-3 text-[0.875rem]" : "h-9 px-4 text-[0.938rem]",
         variant === "primary" &&
           "bg-accent text-white shadow-[0_1px_2px_rgba(10,37,64,0.18)] hover:bg-accent-hover active:bg-accent-hover",
         variant === "outline" &&
@@ -111,7 +111,7 @@ export function Badge({
 }) {
   if (live) {
     return (
-      <span className="inline-flex items-center gap-1.5 rounded-md bg-accent px-2 py-0.5 text-[14px] font-semibold text-white">
+      <span className="inline-flex items-center gap-1.5 rounded-md bg-accent px-2 py-0.5 text-[0.875rem] font-semibold text-white">
         <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-[var(--color-cyan)]" />
         {children}
       </span>
@@ -121,7 +121,7 @@ export function Badge({
   return (
     <span
       className={cn(
-        "inline-flex items-center gap-1.5 rounded-md px-2 py-0.5 text-[14px] font-semibold ring-1 ring-inset",
+        "inline-flex items-center gap-1.5 rounded-md px-2 py-0.5 text-[0.875rem] font-semibold ring-1 ring-inset",
         m.cls
       )}
     >
@@ -141,7 +141,7 @@ export function Select({
     <div className="relative">
       <select
         className={cn(
-          "h-10 w-full appearance-none rounded-lg border border-border-strong bg-panel pl-3 pr-9 text-[15px] font-medium text-ink",
+          "h-10 w-full appearance-none rounded-lg border border-border-strong bg-panel pl-3 pr-9 text-[0.938rem] font-medium text-ink",
           "focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/25",
           className
         )}
@@ -189,7 +189,7 @@ export function Segmented({
             type="button"
             onClick={() => onChange(o.value)}
             className={cn(
-              "h-8 flex-1 rounded-md px-2 text-[14px] font-semibold transition-colors",
+              "h-8 flex-1 rounded-md px-2 text-[0.875rem] font-semibold transition-colors",
               active
                 ? "bg-accent text-white shadow-[0_1px_2px_rgba(10,37,64,0.18)]"
                 : "text-muted hover:text-ink-2"

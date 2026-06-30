@@ -4,13 +4,11 @@
 //    이 파일은 그 스키마가 나오면 교체/동기화한다. (PLAN.md 5절 인터페이스)
 // ───────────────────────────────────────────────────────────────
 
-// 시뮬레이션·시각화 대상 = 부산권(해운대·마린시티). 그 외는 모델 예시 지역(참고).
+// 시뮬레이션·시각화 대상 = 부산권(해운대·마린시티).
 export const REGIONS = [
-  { value: "Busan", label: "부산 · 해운대·마린시티" },
-  { value: "Ulsan", label: "울산 (Ulsan)" },
-  { value: "Jeju_north", label: "제주 북부 (Jeju_north)" },
-  { value: "Jeju_south", label: "제주 남부 (Jeju_south)" },
-  { value: "Jindo_Wando", label: "진도·완도 (Jindo_Wando)" },
+  { value: "Busan", label: "부산 전체 (해운대·마린시티)" },
+  { value: "Haeundae", label: "해운대 해수욕장" },
+  { value: "MarineCity", label: "마린시티" },
 ] as const;
 
 export const SSPS = ["2.6", "4.5", "7.0", "8.5"] as const;
@@ -32,14 +30,59 @@ export const MANNING_MODES = [
   { value: "uniform", label: "균일(0.15)" },
 ] as const;
 
-// 지진원(지진해일 단층) — 01_Deform_Plane 시트(방향)·규모. 세부 단층값은 Excel.
+// 지진원(지진해일 단층) 방위 — 부산 기준 원거리 진앙 방면. 세부 단층값은 Excel.
+// from = 진앙이 위치한 방면(부산에서 멀리 떨어진 발생 해역).
 export const DIRECTIONS = [
-  { value: "EAST", label: "동(EAST)" },
-  { value: "WEST", label: "서(WEST)" },
-  { value: "SOUTH", label: "남(SOUTH)" },
+  { value: "EAST", label: "동(E)", from: "일본·동해" },
+  { value: "WEST", label: "서(W)", from: "서해" },
+  { value: "SOUTH", label: "남(S)", from: "남해·대한해협" },
 ] as const;
 
+export function directionFrom(value: string): string {
+  return DIRECTIONS.find((d) => d.value === value)?.from ?? "";
+}
+
 export const MAGNITUDES = [8.0, 8.5, 9.0] as const; // Mw
+
+// 바닥마찰 유형 (ADCIRC NOLIBF)
+export const NOLIBF_OPTIONS = [
+  { value: 0, label: "선형" },
+  { value: 1, label: "Manning" },
+  { value: 2, label: "하이브리드" },
+] as const;
+
+// 고급 설정 — ADCIRC fort.15 · STEP 세부 (Han fort15_params.py 대응). backend 연동 예정.
+export type AdvancedParams = {
+  rnday: number; // 시뮬레이션 기간 (일)
+  dtdp: number; // 타임스텝 (초)
+  rampDays: number; // 램프업 (일)
+  h0: number; // 최소 수심 (m)
+  nolibf: number; // 바닥마찰 (0 선형 / 1 Manning / 2 하이브리드)
+  fort63Min: number; // 전격자 수면 출력 간격 (분)
+  fort61Min: number; // 관측소 출력 간격 (분)
+  fort64: boolean; // 유속 출력 (fort.64)
+  maxele: boolean; // 최대수면 출력 (maxele)
+  avgStartYear: number; // SLR 평균 시작 연도 (STEP07)
+  avgEndYear: number; // SLR 평균 종료 연도
+  searchRadiusKm: number; // MSL 보정 반경 km (STEP04)
+  stationCount: number; // 관측소 수 (마린시티·해운대·동백·외해 등)
+};
+
+export const DEFAULT_ADVANCED: AdvancedParams = {
+  rnday: 1.0,
+  dtdp: 2.0,
+  rampDays: 0.5,
+  h0: 0.05,
+  nolibf: 1,
+  fort63Min: 10,
+  fort61Min: 1,
+  fort64: false,
+  maxele: true,
+  avgStartYear: 2021,
+  avgEndYear: 2040,
+  searchRadiusKm: 10,
+  stationCount: 5,
+};
 
 // 자동화 대상 10단계 — 진행상태 표시용 (파일명 대신 친화적 라벨)
 export const PIPELINE_STEPS = [
@@ -67,6 +110,8 @@ export type ScenarioParams = {
   // 영역/격자
   region: string;
   manningMode: "uniform" | "graded";
+  // 고급(ADCIRC·STEP 세부)
+  advanced: AdvancedParams;
 };
 
 export const DEFAULT_PARAMS: ScenarioParams = {
@@ -78,6 +123,7 @@ export const DEFAULT_PARAMS: ScenarioParams = {
   period: "far",
   region: "Busan",
   manningMode: "graded",
+  advanced: DEFAULT_ADVANCED,
 };
 
 export type ScenarioStatus = "queued" | "running" | "done" | "failed";
