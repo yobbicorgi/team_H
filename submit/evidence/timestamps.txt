@@ -13,3 +13,4 @@
 [2026-06-30 13:02:35] git pull 완료 — origin/main 최신 반영 (0eb5cc9)
 [2026-06-30 13:28:48] teamH_kim_PROCESS_LOG.md 스타터 생성 (Jin) — submit/ 수집
 [2026-06-30 13:28:48] teamH_jin_PROCESS_LOG.md #7 추가 · Han 브랜치 main 병합 (Jin)
+[2026-06-30 13:34:04] 역할 재분담 반영: PLAN.md/TEAM_GUIDE.md, 폴더 README 규칙 (Jin)
