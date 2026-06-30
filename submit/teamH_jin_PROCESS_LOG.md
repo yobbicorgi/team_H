@@ -101,7 +101,16 @@
 - 결과: 역할 재정의 — **Han=백엔드 수치모델 파이프라인·파라미터(`backend/`)**, **Kim=지진해일 3D 시뮬레이션 시각화(`viz/`)**, **Jin=전체 통합·UX/UI·에이전트(`app/`)**. PLAN.md 4·5·6·7절(역할/인터페이스/마일스톤/소유표)과 TEAM_GUIDE 역할 프롬프트를 새 기준으로 교체. **통합용 폴더 문서 규칙(7-2)** 신설: 각자 본인 폴더 `README.md`에 ①무엇을 만들었나 ②입력/출력(인터페이스) ③실행법 ④TODO를 항상 기록 → Jin이 이를 근거로 통합. 파라미터 스키마/결과 포맷 정의 주체를 Jin→Han으로 이전.
 - 막힘 → 해결: 없음.
 
-### [#9] ...
+### [#9] 통합 웹 플랫폼 베이스(틀) 구축 — `app/` (Next.js)
+- 작성자(팀원): Jin
+- 목표: 파라미터 설정/3D는 Han·Kim이 채울 수 있도록, 통합 앱의 **틀(레이아웃·디자인시스템·연동 슬롯)**을 먼저 만든다.
+- 에이전트에게 시킨 것(실제 프롬프트 핵심 인용):
+  > "@HACKERTON.md에 jiN 작업 내용을 적어놓았어 파악하고 베이스 작업 진행해" / "AI 티 나는 디자인 절대 금지 / 최소 12 Pretendard / 라이트 테마 고정" / "모델 설정 값이나 파라미터 설정 법 그리고 3d 시뮬레이션은 kim과 han이 만들고 나중에 push/pull … 틀만 먼저 만들어"
+- 사용한 기법(있으면): (b 도구연동 — Next.js 스캐폴딩·빌드·Playwright 스크린샷 검증), (c 재사용 산출물 — app/README.md)
+- 결과: `app/`에 Next.js 16 + React 19 + TS + Tailwind v4 앱 생성. 디자인시스템(라이트테마 고정·Pretendard·최소12px·마린블루 단일액센트, 그라데이션/글로우 배제). 레이아웃 = 상단바 + 좌측(실험 파라미터 placeholder → 시나리오 큐 → 에이전트 채팅) + 우측(Kim viz/ 3D 슬롯 placeholder + 침수심 범례·위치핀). 에이전트 채팅은 자연어→좌측 파라미터 자동설정(로컬 파서, 추후 Claude function-calling 교체). [실행] 시 10단계 Mock 진행률 표시. `npm run build` 통과·dev 200 렌더·스크린샷으로 시각 검증(submit/evidence/app_base_screenshot.png). 파라미터 실제값/검증은 Han, 3D는 Kim이 push/pull로 교체 예정 — 연동 지점·TODO를 app/README.md에 명시.
+- 막힘 → 해결: SVG path가 % 좌표 미지원 → 바다 영역을 CSS clip-path로 교체. Segmented 제네릭이 string과 충돌 → 시그니처를 string 기반으로 단순화. 검증용 playwright는 끝나고 제거(팀원 설치 가볍게).
+
+### [#10] ...
 (필요한 만큼 계속 추가)
 
 ---
