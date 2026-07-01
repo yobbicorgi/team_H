@@ -13,7 +13,8 @@ type DemData = { nx: number; ny: number; bbox: number[]; min: number; max: numbe
 type DemSampler = (x: number, z: number) => number;
 
 // DEM 인코딩 범위(m) — 침수 판정 텍스처용. 지형변위는 dem.json 실값 사용.
-const DEM_MIN = -20;
+// 하한을 실측 수심(ETOPO, ~-48m)까지 넓혀 바다 수심 색이 실제 깊이를 반영.
+const DEM_MIN = -60;
 const DEM_MAX = 45;
 // 수직 과장(지형·수심·수면 공통). 거대 씬에서 기복 가시화 + 침수심 일관.
 const TERRAIN_EXAG = 1.6;

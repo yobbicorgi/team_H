@@ -6,8 +6,42 @@ import ReactMarkdown from "react-markdown";
 import type { Components } from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { interpret } from "@/lib/parseIntent";
-import type { ChatMessage, ScenarioParams } from "@/backend/types";
+import type { AgentAction, ChatMessage, ScenarioParams } from "@/backend/types";
 import { cn } from "./ui";
+
+// ── 실제 Claude(/api/agent) 응답 → 검증된 액션 변환 ──
+const VDIR = new Set(["EAST", "WEST", "SOUTH"]);
+const VSSP = new Set(["2.6", "4.5", "7.0", "8.5"]);
+const VPER = new Set(["near", "mid", "long", "far"]);
+const VREG = new Set(["Busan", "Haeundae", "MarineCity"]);
+function coerce(p: Record<string, unknown> | null | undefined): Partial<ScenarioParams> {
+  const o: Partial<ScenarioParams> = {};
+  if (p && VDIR.has(p.direction as string)) o.direction = p.direction as string;
+  const mw = Number(p?.mw);
+  if (isFinite(mw)) o.mw = [8, 8.5, 9].reduce((a, b) => (Math.abs(b - mw) < Math.abs(a - mw) ? b : a));
+  const c = Number(p?.caseNo);
+  if (Number.isFinite(c)) o.caseNo = Math.min(9, Math.max(1, Math.round(c)));
+  if (p && VSSP.has(String(p.ssp))) o.ssp = String(p.ssp);
+  if (p && VPER.has(p.period as string)) o.period = p.period as string;
+  if (p && VREG.has(p.region as string)) o.region = p.region as string;
+  if (p && (p.manningMode === "graded" || p.manningMode === "uniform")) o.manningMode = p.manningMode;
+  return o;
+}
+function toActions(data: Record<string, unknown>, base: ScenarioParams): { actions: AgentAction[]; reply: string } {
+  const set = coerce(data?.set as Record<string, unknown>);
+  const workBase: ScenarioParams = { ...base, ...set };
+  const actions: AgentAction[] = [];
+  if (Object.keys(set).length) actions.push({ type: "set", patch: set });
+  const rawQ = Array.isArray(data?.queue) ? (data.queue as Record<string, unknown>[]) : [];
+  const queue = rawQ.map((q) => coerce(q)).filter((q) => Object.keys(q).length);
+  if (queue.length) {
+    const scenarios = queue.slice(0, 12).map((q) => ({ ...workBase, ...q }));
+    actions.push({ type: "queue", scenarios });
+  }
+  if (data?.run === "single" || data?.run === "all") actions.push({ type: "run", mode: data.run });
+  const reply = typeof data?.reply === "string" && data.reply.trim() ? (data.reply as string) : "요청을 반영했습니다.";
+  return { actions, reply };
+}
 
 const SEED = [
   "원하는 실험 조건을 말로 알려주세요.",
@@ -72,20 +106,38 @@ export function AgentChat({
     listRef.current?.scrollTo({ top: listRef.current.scrollHeight, behavior: "smooth" });
   }, [messages]);
 
-  function send(textArg?: string) {
+  async function send(textArg?: string) {
     const text = (textArg ?? input).trim();
     if (!text) return;
+    setInput("");
 
-    // 로컬 해석 → 액션 실행 (실제: Claude API function-calling)
-    const { actions, reply } = interpret(text, baseParams);
-    if (actions.length > 0) onActions(actions);
-
+    const pendId = crypto.randomUUID();
     setMessages((prev) => [
       ...prev,
       { id: crypto.randomUUID(), role: "user", text },
-      { id: crypto.randomUUID(), role: "assistant", text: reply },
+      { id: pendId, role: "assistant", text: "_요청 해석 중…_" },
     ]);
-    setInput("");
+    const finish = (reply: string) =>
+      setMessages((prev) => prev.map((m) => (m.id === pendId ? { ...m, text: reply } : m)));
+
+    try {
+      // ① 실제 Claude(구독 CLI) — 서버 /api/agent
+      const res = await fetch("/api/agent", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: text }),
+      });
+      const data = await res.json();
+      if (!res.ok || !data?.ok) throw new Error(data?.error || "agent-failed");
+      const { actions, reply } = toActions(data, baseParams);
+      if (actions.length > 0) onActions(actions);
+      finish(reply);
+    } catch {
+      // ② 폴백 — 로컬 규칙 파서 (claude CLI 없거나 오류 시)
+      const { actions, reply } = interpret(text, baseParams);
+      if (actions.length > 0) onActions(actions);
+      finish(reply + "\n\n_※ 실제 Claude 연결 실패 → 로컬 파서로 처리했습니다._");
+    }
   }
 
   return (

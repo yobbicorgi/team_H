@@ -165,15 +165,15 @@ function ViewTab({
     else setPlaying((p) => !p);
   };
 
-  // 표시 시나리오가 새로 완료되면 처음부터 자동 재생
-  const lastId = useRef<string | null>(null);
+  // '실행'한 시나리오가 완료되는 순간에만 자동재생 — 복원/초기 로드는 평수위(정지) 유지
+  const prevSel = useRef<string | undefined>(undefined);
   useEffect(() => {
-    if (current && current.status === "done" && lastId.current !== current.id) {
-      lastId.current = current.id;
+    if (selected?.status === "done" && prevSel.current === "running") {
       setT(0);
       setPlaying(true);
     }
-  }, [current?.id, current?.status]); // eslint-disable-line react-hooks/exhaustive-deps
+    prevSel.current = selected?.status;
+  }, [selected?.id, selected?.status]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <div className="relative min-h-0 flex-1">
